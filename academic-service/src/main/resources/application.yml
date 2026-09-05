@@ -33,11 +33,6 @@ eureka:
   instance:
     prefer-ip-address: true
 
-app:
-  jwt:
-    secret: mySecretKeyThatIsAtLeast32CharactersLongForHS256Algorithm
-    expiration: 86400000
-
 springdoc:
   swagger-ui:
     path: /swagger-ui.html

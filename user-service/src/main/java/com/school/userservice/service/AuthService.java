@@ -8,24 +8,25 @@ import com.school.userservice.entity.UserRole;
 import com.school.userservice.repository.UserRepository;
 import com.school.userservice.repository.UserRoleRepository;
 import com.school.common.exception.ResourceNotFoundException;
+import com.pawan.share.jwt.JwtUtil;
 import com.school.common.exception.DuplicateResourceException;
-import com.school.common.util.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
 @Slf4j
-@RequiredArgsConstructor
+@RequiredArgsConstructor 
 @Transactional
 public class AuthService {
     private final UserRepository userRepository;
     private final UserRoleRepository userRoleRepository;
-    private final JwtTokenProvider jwtTokenProvider;
+    private final JwtUtil jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
 
     public LoginResponseDTO register(UserRegistrationDTO registrationDTO) {
@@ -64,7 +65,7 @@ public class AuthService {
                 .map(UserRole::getRole)
                 .collect(Collectors.toList());
 
-        String token = jwtTokenProvider.generateToken(user.getUsername(), user.getId(), roles);
+        String token = jwtTokenProvider.generateToken(user.getUsername(), roles, user.getId());
 
         return LoginResponseDTO.builder()
                 .userId(user.getId())
@@ -95,7 +96,7 @@ public class AuthService {
                 .map(UserRole::getRole)
                 .collect(Collectors.toList());
 
-        String token = jwtTokenProvider.generateToken(user.getUsername(), user.getId(), roles);
+        String token = jwtTokenProvider.generateToken(user.getUsername(), roles, user.getId());
         log.info("User logged in successfully: {}", user.getId());
 
         return LoginResponseDTO.builder()
