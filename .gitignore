@@ -17,3 +17,4 @@ generated-test-sources/
 
 # Local runtime logs
 .run-logs/
+run-all.sh
