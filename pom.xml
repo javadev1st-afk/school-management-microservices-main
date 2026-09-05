@@ -27,6 +27,7 @@
         <module>communication-service</module>
         <module>utility-service</module>
         <module>api-gateway</module>
+        <module>eureka-server</module>
         <module>common-library</module>
     </modules>
 

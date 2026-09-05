@@ -28,6 +28,10 @@ eureka:
   client:
     service-url:
       defaultZone: ${EUREKA_URL:http://localhost:8761/eureka/}
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    prefer-ip-address: true
 
 spring.cloud.gcp.storage:
   enabled: ${GCP_STORAGE_ENABLED:true}
