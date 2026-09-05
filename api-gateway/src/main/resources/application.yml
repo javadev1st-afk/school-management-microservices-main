@@ -36,6 +36,42 @@ spring:
             allowedHeaders: '*'
             allowCredentials: true
       routes:
+        - id: user-service-openapi
+          uri: lb://user-service
+          predicates:
+            - Path=/v3/api-docs/user-service
+          filters:
+            - SetPath=/v3/api-docs
+        - id: academic-service-openapi
+          uri: lb://academic-service
+          predicates:
+            - Path=/v3/api-docs/academic-service
+          filters:
+            - SetPath=/v3/api-docs
+        - id: payment-service-openapi
+          uri: lb://payment-service
+          predicates:
+            - Path=/v3/api-docs/payment-service
+          filters:
+            - SetPath=/v3/api-docs
+        - id: notification-service-openapi
+          uri: lb://notification-service
+          predicates:
+            - Path=/v3/api-docs/notification-service
+          filters:
+            - SetPath=/v3/api-docs
+        - id: communication-service-openapi
+          uri: lb://communication-service
+          predicates:
+            - Path=/v3/api-docs/communication-service
+          filters:
+            - SetPath=/v3/api-docs
+        - id: utility-service-openapi
+          uri: lb://utility-service
+          predicates:
+            - Path=/v3/api-docs/utility-service
+          filters:
+            - SetPath=/v3/api-docs
         - id: user-service
           uri: lb://user-service
           predicates:
@@ -161,3 +197,22 @@ management:
   endpoint:
     health:
       show-details: when_authorized
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    urls:
+      - name: User Service
+        url: /v3/api-docs/user-service
+      - name: Academic Service
+        url: /v3/api-docs/academic-service
+      - name: Payment Service
+        url: /v3/api-docs/payment-service
+      - name: Notification Service
+        url: /v3/api-docs/notification-service
+      - name: Communication Service
+        url: /v3/api-docs/communication-service
+      - name: Utility Service
+        url: /v3/api-docs/utility-service

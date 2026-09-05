@@ -14,6 +14,12 @@
     <description>File storage, report generation and bulk operations microservice</description>
     <dependencies>
         <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>${springdoc-openapi.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>com.school</groupId>
             <artifactId>common-library</artifactId>
             <version>1.0.0</version>
