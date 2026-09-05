@@ -32,7 +32,7 @@ public class NotificationChannelService {
     public void sendWhatsAppNotification(SendNotificationDTO sendNotificationDTO) {
         log.info("Sending WhatsApp notification to: {}", sendNotificationDTO.getRecipientAddress());
         
-        NotificationLog log = NotificationLog.builder()
+        NotificationLog notificationLog = NotificationLog.builder()
                 .recipientId(sendNotificationDTO.getRecipientId())
                 .notificationChannel("WHATSAPP")
                 .recipientAddress(sendNotificationDTO.getRecipientAddress())
@@ -42,19 +42,19 @@ public class NotificationChannelService {
                 .retryCount(0)
                 .build();
         
-        log = notificationLogRepository.save(log);
+        notificationLog = notificationLogRepository.save(notificationLog);
         
         try {
             // TODO: Integrate with Twilio WhatsApp API
             // Mock implementation for now
-            log.setStatus("SENT");
-            log.setSentAt(LocalDateTime.now());
-            notificationLogRepository.save(log);
+            notificationLog.setStatus("SENT");
+            notificationLog.setSentAt(LocalDateTime.now());
+            notificationLogRepository.save(notificationLog);
             log.info("WhatsApp notification sent successfully to: {}", sendNotificationDTO.getRecipientAddress());
         } catch (Exception e) {
-            log.setStatus("FAILED");
-            log.setErrorMessage(e.getMessage());
-            notificationLogRepository.save(log);
+            notificationLog.setStatus("FAILED");
+            notificationLog.setErrorMessage(e.getMessage());
+            notificationLogRepository.save(notificationLog);
             log.error("Failed to send WhatsApp notification: {}", e.getMessage());
         }
     }
@@ -62,7 +62,7 @@ public class NotificationChannelService {
     public void sendEmailNotification(SendNotificationDTO sendNotificationDTO) {
         log.info("Sending email notification to: {}", sendNotificationDTO.getRecipientAddress());
         
-        NotificationLog log = NotificationLog.builder()
+        NotificationLog notificationLog = NotificationLog.builder()
                 .recipientId(sendNotificationDTO.getRecipientId())
                 .notificationChannel("EMAIL")
                 .recipientAddress(sendNotificationDTO.getRecipientAddress())
@@ -72,19 +72,19 @@ public class NotificationChannelService {
                 .retryCount(0)
                 .build();
         
-        log = notificationLogRepository.save(log);
+        notificationLog = notificationLogRepository.save(notificationLog);
         
         try {
             // TODO: Integrate with Email service (SendGrid, AWS SES, etc.)
             // Mock implementation for now
-            log.setStatus("SENT");
-            log.setSentAt(LocalDateTime.now());
-            notificationLogRepository.save(log);
+            notificationLog.setStatus("SENT");
+            notificationLog.setSentAt(LocalDateTime.now());
+            notificationLogRepository.save(notificationLog);
             log.info("Email notification sent successfully to: {}", sendNotificationDTO.getRecipientAddress());
         } catch (Exception e) {
-            log.setStatus("FAILED");
-            log.setErrorMessage(e.getMessage());
-            notificationLogRepository.save(log);
+            notificationLog.setStatus("FAILED");
+            notificationLog.setErrorMessage(e.getMessage());
+            notificationLogRepository.save(notificationLog);
             log.error("Failed to send email notification: {}", e.getMessage());
         }
     }
@@ -92,7 +92,7 @@ public class NotificationChannelService {
     public void sendSMSNotification(SendNotificationDTO sendNotificationDTO) {
         log.info("Sending SMS notification to: {}", sendNotificationDTO.getRecipientAddress());
         
-        NotificationLog log = NotificationLog.builder()
+        NotificationLog notificationLog = NotificationLog.builder()
                 .recipientId(sendNotificationDTO.getRecipientId())
                 .notificationChannel("SMS")
                 .recipientAddress(sendNotificationDTO.getRecipientAddress())
@@ -102,19 +102,19 @@ public class NotificationChannelService {
                 .retryCount(0)
                 .build();
         
-        log = notificationLogRepository.save(log);
+        notificationLog = notificationLogRepository.save(notificationLog);
         
         try {
             // TODO: Integrate with SMS service (Twilio SMS, AWS SNS, etc.)
             // Mock implementation for now
-            log.setStatus("SENT");
-            log.setSentAt(LocalDateTime.now());
-            notificationLogRepository.save(log);
+            notificationLog.setStatus("SENT");
+            notificationLog.setSentAt(LocalDateTime.now());
+            notificationLogRepository.save(notificationLog);
             log.info("SMS notification sent successfully to: {}", sendNotificationDTO.getRecipientAddress());
         } catch (Exception e) {
-            log.setStatus("FAILED");
-            log.setErrorMessage(e.getMessage());
-            notificationLogRepository.save(log);
+            notificationLog.setStatus("FAILED");
+            notificationLog.setErrorMessage(e.getMessage());
+            notificationLogRepository.save(notificationLog);
             log.error("Failed to send SMS notification: {}", e.getMessage());
         }
     }
@@ -122,7 +122,7 @@ public class NotificationChannelService {
     public void sendPushNotification(SendNotificationDTO sendNotificationDTO) {
         log.info("Sending push notification to device: {}", sendNotificationDTO.getRecipientAddress());
         
-        NotificationLog log = NotificationLog.builder()
+        NotificationLog notificationLog = NotificationLog.builder()
                 .recipientId(sendNotificationDTO.getRecipientId())
                 .notificationChannel("PUSH")
                 .recipientAddress(sendNotificationDTO.getRecipientAddress())
@@ -132,19 +132,19 @@ public class NotificationChannelService {
                 .retryCount(0)
                 .build();
         
-        log = notificationLogRepository.save(log);
+        notificationLog = notificationLogRepository.save(notificationLog);
         
         try {
             // TODO: Integrate with FCM (Firebase Cloud Messaging) or OneSignal
             // Mock implementation for now
-            log.setStatus("SENT");
-            log.setSentAt(LocalDateTime.now());
-            notificationLogRepository.save(log);
+            notificationLog.setStatus("SENT");
+            notificationLog.setSentAt(LocalDateTime.now());
+            notificationLogRepository.save(notificationLog);
             log.info("Push notification sent successfully to device: {}", sendNotificationDTO.getRecipientAddress());
         } catch (Exception e) {
-            log.setStatus("FAILED");
-            log.setErrorMessage(e.getMessage());
-            notificationLogRepository.save(log);
+            notificationLog.setStatus("FAILED");
+            notificationLog.setErrorMessage(e.getMessage());
+            notificationLogRepository.save(notificationLog);
             log.error("Failed to send push notification: {}", e.getMessage());
         }
     }
