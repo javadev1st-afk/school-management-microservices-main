@@ -16,6 +16,7 @@ SERVICE_MODULES=(
 )
 
 PIDS=()
+SERVICE_NAMES=()
 
 log() {
   printf '[run-all] %s\n' "$*"
@@ -73,6 +74,7 @@ start_jar() {
   log "Starting ${module}"
   java -jar "$jar" >"$log_file" 2>&1 &
   PIDS+=("$!")
+  SERVICE_NAMES+=("$module")
 }
 
 require_command java
@@ -104,7 +106,11 @@ log "Press Ctrl+C to stop all services"
 while true; do
   for index in "${!PIDS[@]}"; do
     if ! kill -0 "${PIDS[$index]}" 2>/dev/null; then
-      fail "A service process exited unexpectedly; check ${LOG_DIR}"
+      module="${SERVICE_NAMES[$index]}"
+      log_file="${LOG_DIR}/${module}.log"
+      printf '[run-all] ERROR: %s exited unexpectedly; recent log output:\n' "$module" >&2
+      tail -n 20 "$log_file" >&2 || true
+      fail "Service failure detected in ${module}; check ${log_file}"
     fi
   done
   sleep 5
