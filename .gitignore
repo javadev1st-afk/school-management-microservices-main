@@ -1,0 +1,9 @@
+# Maven build output
+target/
+
+# Generated Maven sources
+generated-sources/
+generated-test-sources/
+
+# Local runtime logs
+.run-logs/
