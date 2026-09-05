@@ -31,6 +31,7 @@ require_command() {
 }
 
 stop_services() {
+  local exit_code=$?
   local pid
   trap - EXIT INT TERM
   for pid in "${PIDS[@]}"; do
@@ -39,6 +40,15 @@ stop_services() {
     fi
   done
   wait 2>/dev/null || true
+
+  if (( exit_code != 0 )); then
+    printf '[run-all] Services stopped with exit code %d. Logs: %s\n' "$exit_code" "$LOG_DIR" >&2
+    if [[ -e /dev/tty ]]; then
+      read -r -p '[run-all] Press Enter to close this Git Bash window...' _ </dev/tty || true
+    fi
+  fi
+
+  return "$exit_code"
 }
 
 wait_for_eureka() {
