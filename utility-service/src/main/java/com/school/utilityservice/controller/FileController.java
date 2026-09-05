@@ -3,6 +3,8 @@ package com.school.utilityservice.controller;
 import com.school.utilityservice.dto.FileMetadataDTO;
 import com.school.utilityservice.service.FileStorageService;
 import com.school.common.response.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.*;
@@ -12,6 +14,8 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController @RequestMapping("/api/v1/files") @RequiredArgsConstructor
+@Tag(name = "Files", description = "File storage management endpoints")
+@SecurityRequirement(name = "bearerAuth")
 public class FileController {
     private final FileStorageService service;
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)

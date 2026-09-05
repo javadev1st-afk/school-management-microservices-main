@@ -3,6 +3,8 @@ package com.school.communicationservice.controller;
 import com.school.communicationservice.dto.LeaveApplicationDTO;
 import com.school.communicationservice.service.LeaveApplicationService;
 import com.school.common.response.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.*;
@@ -10,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController @RequestMapping("/api/v1/leave-applications") @RequiredArgsConstructor
+@Tag(name = "Leave Applications", description = "Leave application management endpoints")
+@SecurityRequirement(name = "bearerAuth")
 public class LeaveApplicationController {
     private final LeaveApplicationService service;
     @PostMapping public ResponseEntity<ApiResponse<LeaveApplicationDTO>> apply(@Valid @RequestBody LeaveApplicationDTO dto) { return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.success(service.apply(dto), "Leave application submitted successfully")); }

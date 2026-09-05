@@ -3,6 +3,8 @@ package com.school.communicationservice.controller;
 import com.school.communicationservice.dto.AnnouncementDTO;
 import com.school.communicationservice.service.AnnouncementService;
 import com.school.common.response.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.*;
@@ -10,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController @RequestMapping("/api/v1/announcements") @RequiredArgsConstructor
+@Tag(name = "Announcements", description = "Announcement management endpoints")
+@SecurityRequirement(name = "bearerAuth")
 public class AnnouncementController {
     private final AnnouncementService service;
     @PostMapping public ResponseEntity<ApiResponse<AnnouncementDTO>> create(@Valid @RequestBody AnnouncementDTO dto) { return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.success(service.create(dto), "Announcement created successfully")); }

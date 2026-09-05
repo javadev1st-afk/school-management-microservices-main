@@ -4,12 +4,16 @@ import com.itextpdf.text.DocumentException;
 import com.school.utilityservice.dto.ReportRequest;
 import com.school.utilityservice.service.ReportService;
 import jakarta.validation.Valid;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 
 @RestController @RequestMapping("/api/v1/reports") @RequiredArgsConstructor
+@Tag(name = "Reports", description = "Report generation endpoints")
+@SecurityRequirement(name = "bearerAuth")
 public class ReportController {
     private final ReportService service;
     @PostMapping(value = "/csv", produces = "text/csv") public ResponseEntity<byte[]> csv(@Valid @RequestBody ReportRequest request) throws IOException { return download(service.csv(request), request.getTitle() + ".csv", "text/csv"); }
