@@ -12,7 +12,7 @@ SERVICE_MODULES=(
   "notification-service"
   "communication-service"
   "utility-service"
-# "api-gateway"
+  "api-gateway"
 )
 
 PIDS=()
