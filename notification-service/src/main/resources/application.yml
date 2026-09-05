@@ -1,0 +1,51 @@
+server:
+  port: 8004
+  servlet:
+    context-path: /
+
+spring:
+  application:
+    name: notification-service
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        format_sql: true
+  datasource:
+    url: jdbc:mysql://localhost:3306/school_management?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 5
+      connection-timeout: 20000
+
+eurekaclient:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+
+app:
+  jwt:
+    secret: mySecretKeyThatIsAtLeast32CharactersLongForHS256Algorithm
+    expiration: 86400000
+  notification:
+    twilio:
+      account-sid: ${TWILIO_ACCOUNT_SID:}
+      auth-token: ${TWILIO_AUTH_TOKEN:}
+      whatsapp-number: ${TWILIO_WHATSAPP_NUMBER:}
+    email:
+      from: noreply@school-management.com
+      smtp-server: smtp.gmail.com
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    operations-sorter: method
+    tags-sorter: alpha
+  api-docs:
+    path: /v3/api-docs
