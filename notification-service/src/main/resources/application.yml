@@ -45,7 +45,12 @@ app:
     - "/internal/**"
     - "/v3/api-docs/**"
     - "/swagger-ui/**"
+    - "/swagger-ui.html"
     - "/swagger-ui/index.html"
+    - "/webjars/**"
+    - "/swagger-resources/**"
+    - "/configuration/**"
+    - "/favicon.ico"
     - "/static/ui/**"
   jwt-expiration-ms: 86400000
   notification:

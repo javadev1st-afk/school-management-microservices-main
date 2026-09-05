@@ -13,6 +13,9 @@ spring:
       - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
       - org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration
       - org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration
+      - org.springframework.boot.jdbc.autoconfigure.DataSourceAutoConfiguration
+      - org.springframework.boot.jdbc.autoconfigure.DataSourceTransactionManagerAutoConfiguration
+      - org.springframework.boot.hibernate.autoconfigure.HibernateJpaAutoConfiguration
       - org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
       - org.springframework.boot.autoconfigure.security.reactive.ReactiveSecurityAutoConfiguration
       - org.springframework.boot.actuate.autoconfigure.security.reactive.ReactiveManagementWebSecurityAutoConfiguration
@@ -216,3 +219,24 @@ springdoc:
         url: /v3/api-docs/communication-service
       - name: Utility Service
         url: /v3/api-docs/utility-service
+app:
+  base-url: http://192.168.1.10:8000/ui
+  jwt-secret-key: mySecretKeyIsMoreSecureThanAnyOtherSecureApplicatoinOrKeyStore
+  corsallowed:
+    - "http://localhost:4200"
+    - "http://192.168.1.10:8000"
+  open-endpoints:
+    - "/ui/**"
+    - "/api/auth/**"
+    - "/api/public/**"
+    - "/internal/**"
+    - "/v3/api-docs/**"
+    - "/swagger-ui/**"
+    - "/swagger-ui.html"
+    - "/swagger-ui/index.html"
+    - "/webjars/**"
+    - "/swagger-resources/**"
+    - "/configuration/**"
+    - "/favicon.ico"
+    - "/static/ui/**"
+  jwt-expiration-ms: 86400000
