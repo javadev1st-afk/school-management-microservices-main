@@ -12,7 +12,7 @@ spring:
     show-sql: false
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQL8Dialect
+        dialect: org.hibernate.dialect.MySQLDialect
         format_sql: true
   datasource:
     url: jdbc:mysql://localhost:3306/school_management?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
@@ -36,15 +36,27 @@ eureka:
 spring.cloud.gcp.storage:
   enabled: ${GCP_STORAGE_ENABLED:true}
 
-app:
-  jwt:
-    secret: ${JWT_SECRET:mySecretKeyThatIsAtLeast32CharactersLongForHS256Algorithm}
-    expiration: 86400000
-  storage:
-    bucket: ${GCS_BUCKET:school-files}
-
 springdoc:
   swagger-ui:
     path: /swagger-ui.html
   api-docs:
     path: /v3/api-docs
+
+app:
+  storage:
+    bucket: ${GCS_BUCKET:school-files}
+  base-url: http://192.168.1.10:8000/ui
+  jwt-secret-key: mySecretKeyIsMoreSecureThanAnyOtherSecureApplicatoinOrKeyStore
+  corsallowed:
+    - "http://localhost:4200"
+    - "http://192.168.1.10:8000"
+  open-endpoints:
+    - "/ui/**"
+    - "/api/auth/**"
+    - "/api/public/**"
+    - "/internal/**"
+    - "/v3/api-docs/**"
+    - "/swagger-ui/**"
+    - "/swagger-ui/index.html"
+    - "/static/ui/**"
+  jwt-expiration-ms: 86400000

@@ -12,7 +12,7 @@ spring:
     show-sql: false
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQL8Dialect
+        dialect: org.hibernate.dialect.MySQLDialect
         format_sql: true
   datasource:
     url: jdbc:mysql://localhost:3306/school_management?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
@@ -33,11 +33,6 @@ eureka:
   instance:
     prefer-ip-address: true
 
-app:
-  jwt:
-    secret: mySecretKeyThatIsAtLeast32CharactersLongForHS256Algorithm
-    expiration: 86400000
-
 springdoc:
   swagger-ui:
     path: /swagger-ui.html
@@ -45,3 +40,20 @@ springdoc:
     tags-sorter: alpha
   api-docs:
     path: /v3/api-docs
+
+app:
+  base-url: http://192.168.1.10:8000/ui
+  jwt-secret-key: mySecretKeyIsMoreSecureThanAnyOtherSecureApplicatoinOrKeyStore
+  corsallowed:
+    - "http://localhost:4200"
+    - "http://192.168.1.10:8000"
+  open-endpoints:
+    - "/ui/**"
+    - "/api/auth/**"
+    - "/api/public/**"
+    - "/internal/**"
+    - "/v3/api-docs/**"
+    - "/swagger-ui/**"
+    - "/swagger-ui/index.html"
+    - "/static/ui/**"
+  jwt-expiration-ms: 86400000

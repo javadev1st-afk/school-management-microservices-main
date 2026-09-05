@@ -9,7 +9,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableScheduling
-@ComponentScan({"com.school.notificationservice", "com.school.common"})
+@ComponentScan({"com.school.notificationservice", "com.school.common", "com.pawan.share.jwt"})
 public class NotificationServiceApplication {
     public static void main(String[] args) {
         SpringApplication.run(NotificationServiceApplication.class, args);
