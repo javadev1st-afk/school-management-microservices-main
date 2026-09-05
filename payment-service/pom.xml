@@ -27,11 +27,6 @@
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>com.google.cloud</groupId>
-            <artifactId>spring-cloud-gcp-starter-pubsub</artifactId>
-        </dependency>
-
         <!-- Apache Commons CSV for CSV processing -->
         <dependency>
             <groupId>org.apache.commons</groupId>
