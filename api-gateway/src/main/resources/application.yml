@@ -37,97 +37,99 @@ spring:
             allowedMethods: GET,POST,PUT,PATCH,DELETE,OPTIONS
             allowedHeaders: '*'
             allowCredentials: true
-      routes:
-        - id: user-service-openapi
-          uri: lb://user-service
-          predicates:
-            - Path=/v3/api-docs/user-service
-          filters:
-            - SetPath=/v3/api-docs
-        - id: academic-service-openapi
-          uri: lb://academic-service
-          predicates:
-            - Path=/v3/api-docs/academic-service
-          filters:
-            - SetPath=/v3/api-docs
-        - id: payment-service-openapi
-          uri: lb://payment-service
-          predicates:
-            - Path=/v3/api-docs/payment-service
-          filters:
-            - SetPath=/v3/api-docs
-        - id: notification-service-openapi
-          uri: lb://notification-service
-          predicates:
-            - Path=/v3/api-docs/notification-service
-          filters:
-            - SetPath=/v3/api-docs
-        - id: communication-service-openapi
-          uri: lb://communication-service
-          predicates:
-            - Path=/v3/api-docs/communication-service
-          filters:
-            - SetPath=/v3/api-docs
-        - id: utility-service-openapi
-          uri: lb://utility-service
-          predicates:
-            - Path=/v3/api-docs/utility-service
-          filters:
-            - SetPath=/v3/api-docs
-        - id: user-service
-          uri: lb://user-service
-          predicates:
-            - Path=/api/v1/auth/**,/api/v1/users/**,/api/v1/students/**,/api/v1/teachers/**,/api/v1/classes/**,/api/v1/sections/**
-          filters:
-            - name: CircuitBreaker
-              args:
-                name: userServiceCircuitBreaker
-                fallbackUri: forward:/fallback
-        - id: academic-service
-          uri: lb://academic-service
-          predicates:
-            - Path=/api/v1/attendance/**,/api/v1/homework/**,/api/v1/results/**,/api/v1/exam-schedule/**
-          filters:
-            - name: CircuitBreaker
-              args:
-                name: academicServiceCircuitBreaker
-                fallbackUri: forward:/fallback
-        - id: payment-service
-          uri: lb://payment-service
-          predicates:
-            - Path=/api/v1/fees/**,/api/v1/fee-structure/**,/api/v1/payments/**,/api/v1/payment-reminders/**
-          filters:
-            - name: CircuitBreaker
-              args:
-                name: paymentServiceCircuitBreaker
-                fallbackUri: forward:/fallback
-        - id: notification-service
-          uri: lb://notification-service
-          predicates:
-            - Path=/api/v1/notifications/**,/api/v1/notification-channels/**,/api/v1/notification-templates/**
-          filters:
-            - name: CircuitBreaker
-              args:
-                name: notificationServiceCircuitBreaker
-                fallbackUri: forward:/fallback
-        - id: communication-service
-          uri: lb://communication-service
-          predicates:
-            - Path=/api/v1/announcements/**,/api/v1/events/**,/api/v1/leave-applications/**
-          filters:
-            - name: CircuitBreaker
-              args:
-                name: communicationServiceCircuitBreaker
-                fallbackUri: forward:/fallback
-        - id: utility-service
-          uri: lb://utility-service
-          predicates:
-            - Path=/api/v1/files/**,/api/v1/reports/**
-          filters:
-            - name: CircuitBreaker
-              args:
-                name: utilityServiceCircuitBreaker
-                fallbackUri: forward:/fallback
+      server:
+        webmvc:
+          routes:
+            - id: user-service-openapi
+              uri: lb://user-service
+              predicates:
+                - Path=/v3/api-docs/user-service
+              filters:
+                - SetPath=/v3/api-docs
+            - id: academic-service-openapi
+              uri: lb://academic-service
+              predicates:
+                - Path=/v3/api-docs/academic-service
+              filters:
+                - SetPath=/v3/api-docs
+            - id: payment-service-openapi
+              uri: lb://payment-service
+              predicates:
+                - Path=/v3/api-docs/payment-service
+              filters:
+                - SetPath=/v3/api-docs
+            - id: notification-service-openapi
+              uri: lb://notification-service
+              predicates:
+                - Path=/v3/api-docs/notification-service
+              filters:
+                - SetPath=/v3/api-docs
+            - id: communication-service-openapi
+              uri: lb://communication-service
+              predicates:
+                - Path=/v3/api-docs/communication-service
+              filters:
+                - SetPath=/v3/api-docs
+            - id: utility-service-openapi
+              uri: lb://utility-service
+              predicates:
+                - Path=/v3/api-docs/utility-service
+              filters:
+                - SetPath=/v3/api-docs
+            - id: user-service
+              uri: lb://user-service
+              predicates:
+                - Path=/api/v1/auth/**,/api/v1/users/**,/api/v1/students/**,/api/v1/teachers/**,/api/v1/classes/**,/api/v1/sections/**
+              filters:
+                - name: CircuitBreaker
+                  args:
+                    name: userServiceCircuitBreaker
+                    fallbackUri: forward:/fallback
+            - id: academic-service
+              uri: lb://academic-service
+              predicates:
+                - Path=/api/v1/attendance/**,/api/v1/homework/**,/api/v1/results/**,/api/v1/exam-schedule/**
+              filters:
+                - name: CircuitBreaker
+                  args:
+                    name: academicServiceCircuitBreaker
+                    fallbackUri: forward:/fallback
+            - id: payment-service
+              uri: lb://payment-service
+              predicates:
+                - Path=/api/v1/fees/**,/api/v1/fee-structure/**,/api/v1/payments/**,/api/v1/payment-reminders/**
+              filters:
+                - name: CircuitBreaker
+                  args:
+                    name: paymentServiceCircuitBreaker
+                    fallbackUri: forward:/fallback
+            - id: notification-service
+              uri: lb://notification-service
+              predicates:
+                - Path=/api/v1/notifications/**,/api/v1/notification-channels/**,/api/v1/notification-templates/**
+              filters:
+                - name: CircuitBreaker
+                  args:
+                    name: notificationServiceCircuitBreaker
+                    fallbackUri: forward:/fallback
+            - id: communication-service
+              uri: lb://communication-service
+              predicates:
+                - Path=/api/v1/announcements/**,/api/v1/events/**,/api/v1/leave-applications/**
+              filters:
+                - name: CircuitBreaker
+                  args:
+                    name: communicationServiceCircuitBreaker
+                    fallbackUri: forward:/fallback
+            - id: utility-service
+              uri: lb://utility-service
+              predicates:
+                - Path=/api/v1/files/**,/api/v1/reports/**
+              filters:
+                - name: CircuitBreaker
+                  args:
+                    name: utilityServiceCircuitBreaker
+                    fallbackUri: forward:/fallback
 
 resilience4j:
   circuitbreaker:
@@ -206,6 +208,7 @@ app:
     - "/webjars/**"
     - "/swagger-resources/**"
     - "/configuration/**"
+    - "/error"
     - "/favicon.ico"
     - "/static/ui/**"
   jwt-expiration-ms: 86400000
