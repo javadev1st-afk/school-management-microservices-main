@@ -133,6 +133,25 @@ spring:
                     name: utilityServiceCircuitBreaker
                     fallbackUri: forward:/fallback
 
+springdoc:
+  swagger-ui:
+    urls-primary-name: gateway
+    urls:
+      - name: gateway
+        url: /v3/api-docs
+      - name: user-service
+        url: /v3/api-docs/user-service
+      - name: academic-service
+        url: /v3/api-docs/academic-service
+      - name: payment-service
+        url: /v3/api-docs/payment-service
+      - name: notification-service
+        url: /v3/api-docs/notification-service
+      - name: communication-service
+        url: /v3/api-docs/communication-service
+      - name: utility-service
+        url: /v3/api-docs/utility-service
+
 resilience4j:
   circuitbreaker:
     configs:
