@@ -1,4 +1,6 @@
 spring:
+  profiles:
+    default: dev
   jpa:
     hibernate:
       ddl-auto: ${JPA_DDL_AUTO:update}
@@ -36,7 +38,7 @@ springdoc:
 
 app:
   base-url: ${APP_BASE_URL:http://localhost:8000/ui}
-  jwt-secret-key: ${JWT_SECRET_KEY:change-me-in-each-environment}
+  jwt-secret-key: ${JWT_SECRET_KEY:change-me-in-each-environment-with-at-least-32-chars}
   corsallowed: ${CORS_ALLOWED_ORIGINS:http://localhost:4200,http://localhost:8000}
   open-endpoints:
     - /ui/**

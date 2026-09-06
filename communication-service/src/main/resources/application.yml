@@ -1,8 +1,8 @@
 server:
-  port: 8005
+  port: ${COMMUNICATION_SERVICE_PORT:8005}
 
 spring:
   config:
-    import: classpath:/common.yml
+    import: optional:classpath:/common-dev.yml,optional:classpath:/common-uat.yml,optional:classpath:/common-prod.yml,classpath:/common.yml
   application:
     name: communication-service
