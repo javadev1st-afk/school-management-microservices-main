@@ -605,28 +605,26 @@ academic-service/
 
 ## Configuration
 
-### JWT Configuration
-Update `app.jwt` properties in `application.yml`:
-```yaml
-app:
-  jwt:
-    secret: mySecretKeyThatIsAtLeast32CharactersLongForHS256Algorithm
-    expiration: 86400000  # 24 hours in milliseconds
+### Shared Environment Configuration
+Shared settings are stored in `common-library/src/main/resources/common.yml` and imported by each application service. Set these environment variables per local, staging, or production environment; values shown after `:` are local defaults.
+
+```text
+DB_URL=jdbc:mysql://localhost:3306/school_management?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+DB_USERNAME=root
+DB_PASSWORD=root
+EUREKA_URL=http://localhost:8761/eureka/
+APP_BASE_URL=http://localhost:8000/ui
+JWT_SECRET_KEY=replace-with-a-long-random-secret
+CORS_ALLOWED_ORIGINS=http://localhost:4200,http://localhost:8000
+JPA_DDL_AUTO=update
+JPA_SHOW_SQL=false
+DB_MAX_POOL_SIZE=20
+DB_MIN_IDLE=5
+DB_CONNECTION_TIMEOUT=20000
+JWT_EXPIRATION_MS=86400000
 ```
 
-### Database Configuration
-```yaml
-spring:
-  datasource:
-    url: jdbc:mysql://localhost:3306/school_management?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
-    username: root
-    password: root
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    hikari:
-      maximum-pool-size: 20
-      minimum-idle: 5
-      connection-timeout: 20000
-```
+Service-specific settings remain in each service's `application.yml`, including ports, gateway routes, notification credentials, payment reminders, and GCS bucket settings. Environment variables such as `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, `TWILIO_WHATSAPP_NUMBER`, `GCS_BUCKET`, and `GCP_STORAGE_ENABLED` override those settings where applicable.
 
 ### GCP Configuration
 Create `application-gcp.yml` for GCP-specific configuration:

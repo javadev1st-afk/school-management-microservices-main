@@ -3,6 +3,8 @@ server:
   forward-headers-strategy: framework
 
 spring:
+  config:
+    import: classpath:/common.yml
   application:
     name: api-gateway
   main:
@@ -154,15 +156,6 @@ resilience4j:
       utilityServiceCircuitBreaker:
         base-config: default
 
-eureka:
-  client:
-    service-url:
-      defaultZone: ${EUREKA_URL:http://localhost:8761/eureka/}
-    register-with-eureka: true
-    fetch-registry: true
-  instance:
-    prefer-ip-address: true
-
 management:
   endpoints:
     web:
@@ -172,43 +165,3 @@ management:
     health:
       show-details: when_authorized
 
-springdoc:
-  api-docs:
-    path: /v3/api-docs
-  swagger-ui:
-    path: /swagger-ui.html
-    urls:
-      - name: User Service
-        url: /v3/api-docs/user-service
-      - name: Academic Service
-        url: /v3/api-docs/academic-service
-      - name: Payment Service
-        url: /v3/api-docs/payment-service
-      - name: Notification Service
-        url: /v3/api-docs/notification-service
-      - name: Communication Service
-        url: /v3/api-docs/communication-service
-      - name: Utility Service
-        url: /v3/api-docs/utility-service
-app:
-  base-url: http://192.168.1.10:8000/ui
-  jwt-secret-key: mySecretKeyIsMoreSecureThanAnyOtherSecureApplicatoinOrKeyStore
-  corsallowed:
-    - "http://localhost:4200"
-    - "http://192.168.1.10:8000"
-  open-endpoints:
-    - "/ui/**"
-    - "/api/auth/**"
-    - "/api/public/**"
-    - "/internal/**"
-    - "/v3/api-docs/**"
-    - "/swagger-ui/**"
-    - "/swagger-ui.html"
-    - "/swagger-ui/index.html"
-    - "/webjars/**"
-    - "/swagger-resources/**"
-    - "/configuration/**"
-    - "/error"
-    - "/favicon.ico"
-    - "/static/ui/**"
-  jwt-expiration-ms: 86400000

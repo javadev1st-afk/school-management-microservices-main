@@ -1,67 +1,15 @@
 server:
   port: 8006
-  servlet:
-    context-path: /
 
 spring:
+  config:
+    import: classpath:/common.yml
   application:
     name: utility-service
-  jpa:
-    hibernate:
-      ddl-auto: create
-    show-sql: false
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.MySQLDialect
-        format_sql: true
-  datasource:
-    url: jdbc:mysql://localhost:3306/school_management?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
-    username: ${DB_USERNAME:root}
-    password: ${DB_PASSWORD:root}
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    hikari:
-      maximum-pool-size: 20
-      minimum-idle: 5
-      connection-timeout: 20000
-
-eureka:
-  client:
-    service-url:
-      defaultZone: ${EUREKA_URL:http://localhost:8761/eureka/}
-    register-with-eureka: true
-    fetch-registry: true
-  instance:
-    prefer-ip-address: true
 
 spring.cloud.gcp.storage:
   enabled: ${GCP_STORAGE_ENABLED:true}
 
-springdoc:
-  swagger-ui:
-    path: /swagger-ui.html
-  api-docs:
-    path: /v3/api-docs
-
 app:
   storage:
     bucket: ${GCS_BUCKET:school-files}
-  base-url: http://192.168.1.10:8000/ui
-  jwt-secret-key: mySecretKeyIsMoreSecureThanAnyOtherSecureApplicatoinOrKeyStore
-  corsallowed:
-    - "http://localhost:4200"
-    - "http://192.168.1.10:8000"
-  open-endpoints:
-    - "/ui/**"
-    - "/api/auth/**"
-    - "/api/public/**"
-    - "/internal/**"
-    - "/v3/api-docs/**"
-    - "/swagger-ui/**"
-    - "/swagger-ui.html"
-    - "/swagger-ui/index.html"
-    - "/webjars/**"
-    - "/swagger-resources/**"
-    - "/configuration/**"
-    - "/favicon.ico"
-    - "/static/ui/**"
-  jwt-expiration-ms: 86400000

@@ -3,6 +3,7 @@ package com.school.userservice.service;
 import com.school.userservice.dto.TeacherDTO;
 import com.school.userservice.entity.Teacher;
 import com.school.userservice.repository.TeacherRepository;
+import com.school.userservice.repository.UserRepository;
 import com.school.userservice.converter.TeacherConverter;
 import com.school.common.exception.ResourceNotFoundException;
 import com.school.common.exception.DuplicateResourceException;
@@ -19,6 +20,7 @@ import java.util.stream.Collectors;
 @Transactional
 public class TeacherService {
     private final TeacherRepository teacherRepository;
+    private final UserRepository userRepository;
     private final TeacherConverter teacherConverter;
 
     public TeacherDTO createTeacher(TeacherDTO teacherDTO) {
@@ -26,6 +28,10 @@ public class TeacherService {
         
         if (teacherRepository.findByEmployeeId(teacherDTO.getEmployeeId()).isPresent()) {
             throw new DuplicateResourceException("Teacher", "employeeId", teacherDTO.getEmployeeId());
+        }
+        
+        if (userRepository.findById(teacherDTO.getUserId()).isEmpty()) {
+            throw new ResourceNotFoundException("Teacher", "userId", teacherDTO.getUserId());
         }
 
         Teacher teacher = teacherConverter.dtoToEntity(teacherDTO);

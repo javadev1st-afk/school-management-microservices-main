@@ -54,7 +54,7 @@ public class AuthService {
         // Assign role
         UserRole userRole = UserRole.builder()
                 .userId(user.getId())
-                .role(registrationDTO.getRole())
+                .role("ROLE_"+registrationDTO.getRole())
                 .build();
         userRoleRepository.save(userRole);
         log.info("Role {} assigned to user id: {}", registrationDTO.getRole(), user.getId());
