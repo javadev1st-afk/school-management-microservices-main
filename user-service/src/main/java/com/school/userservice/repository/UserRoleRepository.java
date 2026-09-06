@@ -1,12 +1,14 @@
 package com.school.userservice.repository;
 
-import com.school.userservice.entity.UserRole;
+import java.util.Set;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import java.util.List;
+
+import com.school.userservice.entity.UserRole;
 
 @Repository
 public interface UserRoleRepository extends JpaRepository<UserRole, Long> {
-    List<UserRole> findByUserId(Long userId);
+    Set<UserRole> findByUserId(Long userId);
     Boolean existsByUserIdAndRole(Long userId, String role);
 }

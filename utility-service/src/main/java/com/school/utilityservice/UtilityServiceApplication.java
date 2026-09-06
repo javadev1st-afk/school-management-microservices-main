@@ -7,7 +7,7 @@ import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
 @EnableDiscoveryClient
-@ComponentScan({"com.school.utilityservice", "com.school.common"})
+@ComponentScan({"com.school.utilityservice", "com.school.common", "com.pawan.share.jwt"})
 public class UtilityServiceApplication {
     public static void main(String[] args) { SpringApplication.run(UtilityServiceApplication.class, args); }
 }

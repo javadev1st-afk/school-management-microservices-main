@@ -605,27 +605,59 @@ academic-service/
 
 ## Configuration
 
-### JWT Configuration
-Update `app.jwt` properties in `application.yml`:
-```yaml
-app:
-  jwt:
-    secret: mySecretKeyThatIsAtLeast32CharactersLongForHS256Algorithm
-    expiration: 86400000  # 24 hours in milliseconds
+### Environment Profiles
+Shared settings are stored in `common-library/src/main/resources/common.yml` with profile overlays for `dev`, `uat`, and `prod`. The default profile is `dev`. Activate a profile when starting any service:
+
+```bash
+java -jar user-service/target/user-service-1.0.0.jar --spring.profiles.active=dev
+java -jar user-service/target/user-service-1.0.0.jar --spring.profiles.active=uat
+java -jar user-service/target/user-service-1.0.0.jar --spring.profiles.active=prod
 ```
 
-### Database Configuration
-```yaml
-spring:
-  datasource:
-    url: jdbc:mysql://localhost:3306/school_management?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
-    username: root
-    password: root
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    hikari:
-      maximum-pool-size: 20
-      minimum-idle: 5
-      connection-timeout: 20000
+The equivalent environment variable is `SPRING_PROFILES_ACTIVE`. UAT and production values without defaults are intentionally required at startup.
+
+Shared profile variables:
+
+```text
+# Required for uat/prod; DEV_* values have local defaults
+DEV_DB_URL=jdbc:mysql://localhost:3306/school_management?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+DEV_DB_USERNAME=root
+DEV_DB_PASSWORD=root
+UAT_DB_URL=<uat-jdbc-url>
+UAT_DB_USERNAME=<uat-username>
+UAT_DB_PASSWORD=<uat-password>
+PROD_DB_URL=<prod-jdbc-url>
+PROD_DB_USERNAME=<prod-username>
+PROD_DB_PASSWORD=<prod-password>
+
+DEV_EUREKA_URL=http://localhost:8761/eureka/
+UAT_EUREKA_URL=<uat-eureka-url>
+PROD_EUREKA_URL=<prod-eureka-url>
+DEV_APP_BASE_URL=http://localhost:8000/ui
+UAT_APP_BASE_URL=<uat-ui-url>
+PROD_APP_BASE_URL=<prod-ui-url>
+DEV_JWT_SECRET_KEY=<dev-secret>
+UAT_JWT_SECRET_KEY=<uat-secret>
+PROD_JWT_SECRET_KEY=<prod-secret>
+DEV_CORS_ALLOWED_ORIGINS=http://localhost:4200,http://localhost:8000
+UAT_CORS_ALLOWED_ORIGINS=<uat-origins>
+PROD_CORS_ALLOWED_ORIGINS=<prod-origins>
+```
+
+Common tuning variables include `DB_MAX_POOL_SIZE`, `DB_MIN_IDLE`, `DB_CONNECTION_TIMEOUT`, `JPA_FORMAT_SQL`, `JPA_DDL_AUTO`, `JPA_SHOW_SQL`, and `*_JWT_EXPIRATION_MS`.
+
+Service-specific variables:
+
+```text
+API_GATEWAY_PORT, USER_SERVICE_PORT, ACADEMIC_SERVICE_PORT
+PAYMENT_SERVICE_PORT, NOTIFICATION_SERVICE_PORT, COMMUNICATION_SERVICE_PORT
+UTILITY_SERVICE_PORT, EUREKA_SERVER_PORT
+REDIS_HOST, REDIS_PORT, GATEWAY_CORS_ALLOWED_ORIGINS
+PAYMENT_REMINDER_DAYS_BEFORE_DUE, PAYMENT_REMINDER_DAYS_AFTER_DUE
+PAYMENT_REMINDER_DAYS_AFTER_DUE_14
+TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_WHATSAPP_NUMBER
+NOTIFICATION_EMAIL_FROM, NOTIFICATION_SMTP_SERVER
+GCP_STORAGE_ENABLED, GCS_BUCKET
 ```
 
 ### GCP Configuration

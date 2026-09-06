@@ -1,55 +1,18 @@
 server:
-  port: 8004
-  servlet:
-    context-path: /
+  port: ${NOTIFICATION_SERVICE_PORT:8004}
 
 spring:
+  config:
+    import: optional:classpath:/common-dev.yml,optional:classpath:/common-uat.yml,optional:classpath:/common-prod.yml,classpath:/common.yml
   application:
     name: notification-service
-  jpa:
-    hibernate:
-      ddl-auto: create
-    show-sql: false
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.MySQL8Dialect
-        format_sql: true
-  datasource:
-    url: jdbc:mysql://localhost:3306/school_management?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
-    username: root
-    password: root
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    hikari:
-      maximum-pool-size: 20
-      minimum-idle: 5
-      connection-timeout: 20000
-
-eureka:
-  client:
-    service-url:
-      defaultZone: ${EUREKA_URL:http://localhost:8761/eureka/}
-    register-with-eureka: true
-    fetch-registry: true
-  instance:
-    prefer-ip-address: true
-
 app:
-  jwt:
-    secret: mySecretKeyThatIsAtLeast32CharactersLongForHS256Algorithm
-    expiration: 86400000
   notification:
     twilio:
       account-sid: ${TWILIO_ACCOUNT_SID:}
       auth-token: ${TWILIO_AUTH_TOKEN:}
       whatsapp-number: ${TWILIO_WHATSAPP_NUMBER:}
     email:
-      from: noreply@school-management.com
-      smtp-server: smtp.gmail.com
+      from: ${NOTIFICATION_EMAIL_FROM:noreply@school-management.com}
+      smtp-server: ${NOTIFICATION_SMTP_SERVER:smtp.gmail.com}
 
-springdoc:
-  swagger-ui:
-    path: /swagger-ui.html
-    operations-sorter: method
-    tags-sorter: alpha
-  api-docs:
-    path: /v3/api-docs

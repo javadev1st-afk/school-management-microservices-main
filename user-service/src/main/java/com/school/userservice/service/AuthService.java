@@ -8,24 +8,25 @@ import com.school.userservice.entity.UserRole;
 import com.school.userservice.repository.UserRepository;
 import com.school.userservice.repository.UserRoleRepository;
 import com.school.common.exception.ResourceNotFoundException;
+import com.pawan.share.jwt.JwtUtil;
 import com.school.common.exception.DuplicateResourceException;
-import com.school.common.util.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
 @Slf4j
-@RequiredArgsConstructor
+@RequiredArgsConstructor 
 @Transactional
 public class AuthService {
     private final UserRepository userRepository;
     private final UserRoleRepository userRoleRepository;
-    private final JwtTokenProvider jwtTokenProvider;
+    private final JwtUtil jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
 
     public LoginResponseDTO register(UserRegistrationDTO registrationDTO) {
@@ -53,7 +54,7 @@ public class AuthService {
         // Assign role
         UserRole userRole = UserRole.builder()
                 .userId(user.getId())
-                .role(registrationDTO.getRole())
+                .role("ROLE_"+registrationDTO.getRole())
                 .build();
         userRoleRepository.save(userRole);
         log.info("Role {} assigned to user id: {}", registrationDTO.getRole(), user.getId());
@@ -64,7 +65,7 @@ public class AuthService {
                 .map(UserRole::getRole)
                 .collect(Collectors.toList());
 
-        String token = jwtTokenProvider.generateToken(user.getUsername(), user.getId(), roles);
+        String token = jwtTokenProvider.generateToken(user.getUsername(), roles, user.getId());
 
         return LoginResponseDTO.builder()
                 .userId(user.getId())
@@ -72,18 +73,19 @@ public class AuthService {
                 .email(user.getEmail())
                 .token(token)
                 .roles(roles)
+                .isActive(true)
                 .build();
     }
 
     public LoginResponseDTO login(LoginRequestDTO loginRequest) {
-        log.info("Attempting login for email: {}", loginRequest.getEmail());
+        log.info("Attempting login for username: {}", loginRequest.getUsername());
 
-        User user = userRepository.findByEmail(loginRequest.getEmail())
-                .orElseThrow(() -> new ResourceNotFoundException("User", "email", loginRequest.getEmail()));
+        User user = userRepository.findByUsername(loginRequest.getUsername())
+                .orElseThrow(() -> new ResourceNotFoundException("User", "username", loginRequest.getUsername()));
 
         if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
-            log.warn("Invalid password for user: {}", loginRequest.getEmail());
-            throw new RuntimeException("Invalid email or password");
+            log.warn("Invalid password for user: {}", loginRequest.getUsername());
+            throw new RuntimeException("Invalid username or password");
         }
 
         if (!user.getIsActive()) {
@@ -95,7 +97,7 @@ public class AuthService {
                 .map(UserRole::getRole)
                 .collect(Collectors.toList());
 
-        String token = jwtTokenProvider.generateToken(user.getUsername(), user.getId(), roles);
+        String token = jwtTokenProvider.generateToken(user.getUsername(), roles, user.getId());
         log.info("User logged in successfully: {}", user.getId());
 
         return LoginResponseDTO.builder()
@@ -105,5 +107,16 @@ public class AuthService {
                 .token(token)
                 .roles(roles)
                 .build();
+    }
+  
+    public void updateUserStatus(String userName, boolean isActive) {
+        log.info("Attempting update user status for username: {}", userName);
+
+        User user = userRepository.findByUsername(userName)
+                .orElseThrow(() -> new ResourceNotFoundException("User", "userName", userName));
+       if(!Objects.equals(isActive, user.getIsActive()) ) {
+    	   user.setIsActive(isActive);
+    	   userRepository.save(user);
+       }
     }
 }
