@@ -16,7 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
-import java.util.Set;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -73,18 +73,19 @@ public class AuthService {
                 .email(user.getEmail())
                 .token(token)
                 .roles(roles)
+                .isActive(true)
                 .build();
     }
 
     public LoginResponseDTO login(LoginRequestDTO loginRequest) {
-        log.info("Attempting login for email: {}", loginRequest.getEmail());
+        log.info("Attempting login for username: {}", loginRequest.getUsername());
 
-        User user = userRepository.findByEmail(loginRequest.getEmail())
-                .orElseThrow(() -> new ResourceNotFoundException("User", "email", loginRequest.getEmail()));
+        User user = userRepository.findByUsername(loginRequest.getUsername())
+                .orElseThrow(() -> new ResourceNotFoundException("User", "username", loginRequest.getUsername()));
 
         if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
-            log.warn("Invalid password for user: {}", loginRequest.getEmail());
-            throw new RuntimeException("Invalid email or password");
+            log.warn("Invalid password for user: {}", loginRequest.getUsername());
+            throw new RuntimeException("Invalid username or password");
         }
 
         if (!user.getIsActive()) {
@@ -106,5 +107,16 @@ public class AuthService {
                 .token(token)
                 .roles(roles)
                 .build();
+    }
+  
+    public void updateUserStatus(String userName, boolean isActive) {
+        log.info("Attempting update user status for username: {}", userName);
+
+        User user = userRepository.findByUsername(userName)
+                .orElseThrow(() -> new ResourceNotFoundException("User", "userName", userName));
+       if(!Objects.equals(isActive, user.getIsActive()) ) {
+    	   user.setIsActive(isActive);
+    	   userRepository.save(user);
+       }
     }
 }

@@ -16,4 +16,5 @@ public class LoginResponseDTO {
     private String token;
     private String refreshToken;
     private java.util.List<String> roles;
+    private boolean isActive;
 }

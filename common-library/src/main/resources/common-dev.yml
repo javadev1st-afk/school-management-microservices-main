@@ -8,7 +8,7 @@ spring:
     password: ${DEV_DB_PASSWORD:root}
   jpa:
     hibernate:
-      ddl-auto: ${DEV_JPA_DDL_AUTO:create}
+      ddl-auto: ${DEV_JPA_DDL_AUTO:validate}
     show-sql: ${DEV_JPA_SHOW_SQL:false}
 
 eureka:

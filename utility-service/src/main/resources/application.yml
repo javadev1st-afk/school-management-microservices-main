@@ -6,8 +6,6 @@ spring:
     import: optional:classpath:/common-dev.yml,optional:classpath:/common-uat.yml,optional:classpath:/common-prod.yml,classpath:/common.yml
   application:
     name: utility-service
-
-spring:
   cloud:
     gcp:
       storage:
