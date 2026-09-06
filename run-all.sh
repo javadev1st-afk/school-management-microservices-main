@@ -22,7 +22,6 @@ export DEV_JWT_EXPIRATION_MS="${DEV_JWT_EXPIRATION_MS:-86400000}"
 export DB_MAX_POOL_SIZE="${DB_MAX_POOL_SIZE:-20}"
 export DB_MIN_IDLE="${DB_MIN_IDLE:-5}"
 export DB_CONNECTION_TIMEOUT="${DB_CONNECTION_TIMEOUT:-20000}"
-export JPA_DIALECT="${JPA_DIALECT:-org.hibernate.dialect.MySQLDialect}"
 export JPA_FORMAT_SQL="${JPA_FORMAT_SQL:-true}"
 
 export API_GATEWAY_PORT="${API_GATEWAY_PORT:-8000}"
@@ -62,7 +61,7 @@ export CIRCUIT_BREAKER_FAILURE_RATE_THRESHOLD="${CIRCUIT_BREAKER_FAILURE_RATE_TH
 export CIRCUIT_BREAKER_WAIT_DURATION="${CIRCUIT_BREAKER_WAIT_DURATION:-10s}"
 
 SERVICE_MODULES=(
-  "user-service"
+  #"user-service"
   "academic-service"
   "payment-service"
   "notification-service"

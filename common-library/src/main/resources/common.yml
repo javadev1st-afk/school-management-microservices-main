@@ -2,17 +2,10 @@ spring:
   profiles:
     default: dev
   jpa:
-    hibernate:
-      ddl-auto: ${JPA_DDL_AUTO:update}
-    show-sql: ${JPA_SHOW_SQL:false}
     properties:
       hibernate:
-        dialect: ${JPA_DIALECT:org.hibernate.dialect.MySQLDialect}
         format_sql: ${JPA_FORMAT_SQL:true}
   datasource:
-    url: ${DB_URL:jdbc:mysql://localhost:3306/school_management?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true}
-    username: ${DB_USERNAME:root}
-    password: ${DB_PASSWORD:root}
     driver-class-name: ${DB_DRIVER:com.mysql.cj.jdbc.Driver}
     hikari:
       maximum-pool-size: ${DB_MAX_POOL_SIZE:20}
@@ -21,8 +14,6 @@ spring:
 
 eureka:
   client:
-    service-url:
-      defaultZone: ${EUREKA_URL:http://localhost:8761/eureka/}
     register-with-eureka: true
     fetch-registry: true
   instance:
@@ -37,9 +28,6 @@ springdoc:
     path: /v3/api-docs
 
 app:
-  base-url: ${APP_BASE_URL:http://localhost:8000/ui}
-  jwt-secret-key: ${JWT_SECRET_KEY:change-me-in-each-environment-with-at-least-32-chars}
-  corsallowed: ${CORS_ALLOWED_ORIGINS:http://localhost:4200,http://localhost:8000}
   open-endpoints:
     - /ui/**
     - /api/v1/auth/**
@@ -56,4 +44,3 @@ app:
     - /error
     - /favicon.ico
     - /static/ui/**
-  jwt-expiration-ms: ${JWT_EXPIRATION_MS:86400000}

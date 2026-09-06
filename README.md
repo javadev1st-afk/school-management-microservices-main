@@ -644,7 +644,7 @@ UAT_CORS_ALLOWED_ORIGINS=<uat-origins>
 PROD_CORS_ALLOWED_ORIGINS=<prod-origins>
 ```
 
-Common tuning variables include `DB_MAX_POOL_SIZE`, `DB_MIN_IDLE`, `DB_CONNECTION_TIMEOUT`, `JPA_DIALECT`, `JPA_FORMAT_SQL`, `JPA_DDL_AUTO`, `JPA_SHOW_SQL`, and `*_JWT_EXPIRATION_MS`.
+Common tuning variables include `DB_MAX_POOL_SIZE`, `DB_MIN_IDLE`, `DB_CONNECTION_TIMEOUT`, `JPA_FORMAT_SQL`, `JPA_DDL_AUTO`, `JPA_SHOW_SQL`, and `*_JWT_EXPIRATION_MS`.
 
 Service-specific variables:
 

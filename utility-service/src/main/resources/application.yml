@@ -7,8 +7,11 @@ spring:
   application:
     name: utility-service
 
-spring.cloud.gcp.storage:
-  enabled: ${GCP_STORAGE_ENABLED:false}
+spring:
+  cloud:
+    gcp:
+      storage:
+        enabled: ${GCP_STORAGE_ENABLED:false}
 
 app:
   storage:
