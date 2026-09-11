@@ -10,4 +10,7 @@ import java.util.Optional;
 public interface ClassRepository extends JpaRepository<Class, Long> {
     Optional<Class> findByClassNameAndAcademicYear(String className, String academicYear);
     List<Class> findByIsActiveTrue();
+    Optional<Class> findByClassId(Long classId);
+    void deleteByClassId(Long classId);
+    boolean existsByClassId(Long classId);
 }

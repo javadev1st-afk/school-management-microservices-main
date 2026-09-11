@@ -1,4 +1,4 @@
-package com.school.academicservice.config;
+package com.school.common.swagger;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
@@ -13,9 +13,9 @@ public class OpenApiConfig {
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
                 .info(new Info()
-                        .title("Academic Service API")
+                        .title("User Service API")
                         .version("1.0.0")
-                        .description("Academic management microservice for School Management System - Attendance, Homework, Results, Exams"))
+                        .description("User management microservice for School Management System"))
                 .components(new io.swagger.v3.oas.models.Components()
                         .addSecuritySchemes("bearerAuth",
                                 new SecurityScheme()

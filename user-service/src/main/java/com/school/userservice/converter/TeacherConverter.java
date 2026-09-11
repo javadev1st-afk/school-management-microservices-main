@@ -15,7 +15,7 @@ public class TeacherConverter {
         }
         return TeacherDTO.builder()
                 .id(teacher.getId())
-                .userId(teacher.getUserId())
+                .username(teacher.getUsername())
                 .employeeId(teacher.getEmployeeId())
                 .qualification(teacher.getQualification())
                 .specialization(teacher.getSpecialization())
@@ -30,7 +30,7 @@ public class TeacherConverter {
         }
         return Teacher.builder()
                 .id(teacherDTO.getId())
-                .userId(teacherDTO.getUserId())
+                .username(teacherDTO.getUsername())
                 .employeeId(teacherDTO.getEmployeeId())
                 .qualification(teacherDTO.getQualification())
                 .specialization(teacherDTO.getSpecialization())

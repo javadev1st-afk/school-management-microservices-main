@@ -9,6 +9,6 @@ import com.school.userservice.entity.UserRole;
 
 @Repository
 public interface UserRoleRepository extends JpaRepository<UserRole, Long> {
-    Set<UserRole> findByUserId(Long userId);
-    Boolean existsByUserIdAndRole(Long userId, String role);
+    Set<UserRole> findByUsername(String usename);
+    Boolean existsByUsernameAndRole(String userId, String role);
 }
