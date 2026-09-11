@@ -53,14 +53,14 @@ public class AuthService {
 
         // Assign role
         UserRole userRole = UserRole.builder()
-                .userId(user.getId())
+                .username(user.getUsername())
                 .role("ROLE_"+registrationDTO.getRole())
                 .build();
         userRoleRepository.save(userRole);
         log.info("Role {} assigned to user id: {}", registrationDTO.getRole(), user.getId());
 
         // Generate token
-        List<String> roles = userRoleRepository.findByUserId(user.getId())
+        List<String> roles = userRoleRepository.findByUsername(user.getUsername())
                 .stream()
                 .map(UserRole::getRole)
                 .collect(Collectors.toList());
@@ -68,7 +68,7 @@ public class AuthService {
         String token = jwtTokenProvider.generateToken(user.getUsername(), roles, user.getId());
 
         return LoginResponseDTO.builder()
-                .userId(user.getId())
+                .username(user.getUsername())
                 .username(user.getUsername())
                 .email(user.getEmail())
                 .token(token)
@@ -92,7 +92,7 @@ public class AuthService {
             throw new RuntimeException("User account is deactivated");
         }
 
-        List<String> roles = userRoleRepository.findByUserId(user.getId())
+        List<String> roles = userRoleRepository.findByUsername(user.getUsername())
                 .stream()
                 .map(UserRole::getRole)
                 .collect(Collectors.toList());
@@ -101,11 +101,12 @@ public class AuthService {
         log.info("User logged in successfully: {}", user.getId());
 
         return LoginResponseDTO.builder()
-                .userId(user.getId())
+                .id(user.getId())
                 .username(user.getUsername())
                 .email(user.getEmail())
                 .token(token)
                 .roles(roles)
+                .isActive(user.getIsActive())
                 .build();
     }
   

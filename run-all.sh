@@ -15,7 +15,7 @@ export DEV_EUREKA_URL="${DEV_EUREKA_URL:-${EUREKA_URL}/eureka/}"
 export DEV_APP_BASE_URL="${DEV_APP_BASE_URL:-http://localhost:8000/ui}"
 export DEV_JWT_SECRET_KEY="${DEV_JWT_SECRET_KEY:-dev-only-change-this-secret-with-32-chars}"
 export DEV_CORS_ALLOWED_ORIGINS="${DEV_CORS_ALLOWED_ORIGINS:-http://localhost:4200,http://localhost:8000}"
-export DEV_JPA_DDL_AUTO="${DEV_JPA_DDL_AUTO:-validate}"
+export DEV_JPA_DDL_AUTO="${DEV_JPA_DDL_AUTO:-create}"
 export DEV_JPA_SHOW_SQL="${DEV_JPA_SHOW_SQL:-false}"
 export DEV_JWT_EXPIRATION_MS="${DEV_JWT_EXPIRATION_MS:-86400000}"
 
@@ -61,7 +61,7 @@ export CIRCUIT_BREAKER_FAILURE_RATE_THRESHOLD="${CIRCUIT_BREAKER_FAILURE_RATE_TH
 export CIRCUIT_BREAKER_WAIT_DURATION="${CIRCUIT_BREAKER_WAIT_DURATION:-10s}"
 
 SERVICE_MODULES=(
-  #"user-service"
+  "user-service"
   "academic-service"
   "payment-service"
   "notification-service"

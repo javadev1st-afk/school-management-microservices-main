@@ -53,12 +53,12 @@ public class TeacherController {
         return ResponseEntity.ok(ApiResponse.success(response));
     }
 
-    @GetMapping("/user/{userId}")
+    @GetMapping("/user/{username}")
     @PreAuthorize("hasAnyRole('ADMIN', 'TEACHER')")
     @Operation(summary = "Get teacher by user ID")
-    public ResponseEntity<ApiResponse<TeacherDTO>> getTeacherByUserId(@PathVariable Long userId) {
-        log.info("Get teacher request received for user id: {}", userId);
-        TeacherDTO response = teacherService.getTeacherByUserId(userId);
+    public ResponseEntity<ApiResponse<TeacherDTO>> getTeacherByUserId(@PathVariable String username) {
+        log.info("Get teacher request received for username: {}", username);
+        TeacherDTO response = teacherService.getTeacherByUsername(username);
         return ResponseEntity.ok(ApiResponse.success(response));
     }
 

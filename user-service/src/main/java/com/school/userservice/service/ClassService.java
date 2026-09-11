@@ -34,34 +34,34 @@ public class ClassService {
         return classConverter.entityToDTO(clazz);
     }
 
-    public ClassDTO getClassById(Long id) {
-        log.info("Fetching class with id: {}", id);
-        Class clazz = classRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Class", "id", id));
+    public ClassDTO getClassById(Long classId) {
+        log.info("Fetching class with id: {}", classId);
+        Class clazz = classRepository.findByClassId(classId)
+                .orElseThrow(() -> new ResourceNotFoundException("Class", "classId", classId));
         return classConverter.entityToDTO(clazz);
     }
 
-    public ClassDTO updateClass(Long id, ClassDTO classDTO) {
-        log.info("Updating class with id: {}", id);
-        Class clazz = classRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Class", "id", id));
+    public ClassDTO updateClass(Long classId, ClassDTO classDTO) {
+        log.info("Updating class with id: {}", classId);
+        Class clazz = classRepository.findByClassId(classId)
+                .orElseThrow(() -> new ResourceNotFoundException("Class", "classId", classId));
 
         clazz.setClassName(classDTO.getClassName());
         clazz.setAcademicYear(classDTO.getAcademicYear());
         clazz.setIsActive(classDTO.getIsActive());
 
         clazz = classRepository.save(clazz);
-        log.info("Class updated successfully with id: {}", clazz.getId());
+        log.info("Class updated successfully with classId: {}", clazz.getClassId());
         return classConverter.entityToDTO(clazz);
     }
 
-    public void deleteClass(Long id) {
-        log.info("Deleting class with id: {}", id);
-        if (!classRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Class", "id", id);
+    public void deleteClass(Long classId) {
+        log.info("Deleting class with classId: {}", classId);
+        if (!classRepository.existsByClassId(classId)) {
+            throw new ResourceNotFoundException("Class", "classId", classId);
         }
-        classRepository.deleteById(id);
-        log.info("Class deleted successfully with id: {}", id);
+        classRepository.deleteByClassId(classId);
+        log.info("Class deleted successfully with classId: {}", classId);
     }
 
     public List<ClassDTO> getAllClasses() {

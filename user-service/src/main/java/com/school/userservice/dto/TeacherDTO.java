@@ -15,8 +15,8 @@ import java.time.LocalDate;
 public class TeacherDTO {
     private Long id;
 
-    @NotNull(message = "User ID is required")
-    private Long userId;
+    @NotNull(message = "Username is required")
+    private String username;
 
     @NotBlank(message = "Employee ID is required")
     private String employeeId;

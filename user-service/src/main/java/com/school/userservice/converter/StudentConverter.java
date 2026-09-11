@@ -1,9 +1,11 @@
 package com.school.userservice.converter;
 
+import org.springframework.stereotype.Component;
+
 import com.school.userservice.dto.StudentDTO;
 import com.school.userservice.entity.Student;
+
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
@@ -15,10 +17,10 @@ public class StudentConverter {
         }
         return StudentDTO.builder()
                 .id(student.getId())
-                .userId(student.getUserId())
+                .admissionNumber(student.getAdmissionNumber())
                 .rollNumber(student.getRollNumber())
                 .classId(student.getClassId())
-                .sectionId(student.getSectionId())
+                .sectionName(student.getSectionName())
                 .fatherName(student.getFatherName())
                 .motherName(student.getMotherName())
                 .dateOfBirth(student.getDateOfBirth())
@@ -33,10 +35,10 @@ public class StudentConverter {
         }
         return Student.builder()
                 .id(studentDTO.getId())
-                .userId(studentDTO.getUserId())
+                .admissionNumber(studentDTO.getAdmissionNumber())
                 .rollNumber(studentDTO.getRollNumber())
                 .classId(studentDTO.getClassId())
-                .sectionId(studentDTO.getSectionId())
+                .sectionName(studentDTO.getSectionName())
                 .fatherName(studentDTO.getFatherName())
                 .motherName(studentDTO.getMotherName())
                 .dateOfBirth(studentDTO.getDateOfBirth())

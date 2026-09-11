@@ -15,6 +15,7 @@ public class ClassConverter {
         }
         return ClassDTO.builder()
                 .id(clazz.getId())
+                .classId(clazz.getClassId())
                 .className(clazz.getClassName())
                 .academicYear(clazz.getAcademicYear())
                 .isActive(clazz.getIsActive())
@@ -27,6 +28,7 @@ public class ClassConverter {
         }
         return Class.builder()
                 .id(classDTO.getId())
+                .classId(classDTO.getClassId())
                 .className(classDTO.getClassName())
                 .academicYear(classDTO.getAcademicYear())
                 .isActive(classDTO.getIsActive())
