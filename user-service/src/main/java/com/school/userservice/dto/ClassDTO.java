@@ -1,11 +1,10 @@
 package com.school.userservice.dto;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 
 @Data
 @AllArgsConstructor
@@ -14,6 +13,9 @@ import jakarta.validation.constraints.NotNull;
 public class ClassDTO {
     private Long id;
 
+    @NotBlank(message = "Class ID is required")
+    private Long classId;
+    
     @NotBlank(message = "Class name is required")
     private String className;
 

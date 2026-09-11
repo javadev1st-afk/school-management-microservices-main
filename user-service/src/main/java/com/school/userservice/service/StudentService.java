@@ -43,10 +43,10 @@ public class StudentService {
         return studentConverter.entityToDTO(student);
     }
 
-    public StudentDTO getStudentByUserId(Long userId) {
-        log.info("Fetching student with user id: {}", userId);
-        Student student = studentRepository.findByUserId(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("Student", "userId", userId));
+    public StudentDTO getStudentByUsernameOrAdmNumber(String username) {
+        log.info("Fetching student with admissionNumber/username: {}", username);
+        Student student = studentRepository.findByAdmissionNumber(username)
+                .orElseThrow(() -> new ResourceNotFoundException("Student", "admissionNumber/username", username));
         return studentConverter.entityToDTO(student);
     }
 
@@ -57,17 +57,17 @@ public class StudentService {
         return studentConverter.entityToDTO(student);
     }
 
-    public List<StudentDTO> getStudentsByClassAndSection(Long classId, Long sectionId) {
-        log.info("Fetching students for class: {} and section: {}", classId, sectionId);
-        List<Student> students = studentRepository.findByClassIdAndSectionId(classId, sectionId);
+    public List<StudentDTO> getStudentsByClassAndSection(Long classId, String secName) {
+        log.info("Fetching students for class: {} and section: {}", classId, secName);
+        List<Student> students = studentRepository.findByClassIdAndSectionName(classId, secName);
         return students.stream()
                 .map(studentConverter::entityToDTO)
                 .collect(Collectors.toList());
     }
 
-    public Page<StudentDTO> getStudentsByClassAndSection(Long classId, Long sectionId, Pageable pageable) {
-        log.info("Fetching paginated students for class: {} and section: {}", classId, sectionId);
-        Page<Student> students = studentRepository.findByClassIdAndSectionId(classId, sectionId, pageable);
+    public Page<StudentDTO> getStudentsByClassAndSection(Long classId, String secName, Pageable pageable) {
+        log.info("Fetching paginated students for class: {} and section: {}", classId, secName);
+        Page<Student> students = studentRepository.findByClassIdAndSectionName(classId, secName, pageable);
         return students.map(studentConverter::entityToDTO);
     }
 

@@ -1,7 +1,10 @@
 package com.school.userservice.controller;
 
+import com.school.userservice.dto.SeatMatrixDTO;
 import com.school.userservice.dto.SectionDTO;
+import com.school.userservice.service.CommonService;
 import com.school.userservice.service.SectionService;
+import com.school.userservice.service.StudentService;
 import com.school.common.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -23,6 +26,7 @@ import java.util.List;
 @SecurityRequirement(name = "bearerAuth")
 public class SectionController {
     private final SectionService sectionService;
+    private final CommonService commonService;
 
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
@@ -81,6 +85,15 @@ public class SectionController {
         return ResponseEntity.ok(ApiResponse.success(null, "Section deleted successfully"));
     }
 
+    @GetMapping("/seat/matrix")
+    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "Get all sections seat matrix")
+    public ResponseEntity<ApiResponse<List<SeatMatrixDTO>>> getAllSectionsSeats() {
+        log.info("Get all sections seat matrix request received");
+        List<SeatMatrixDTO> response = commonService.getAllSectionsSeatMatrix();
+        return ResponseEntity.ok(ApiResponse.success(response));
+    }
+    
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Get all sections")

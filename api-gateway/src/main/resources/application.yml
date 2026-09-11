@@ -81,55 +81,67 @@ spring:
             - id: user-service
               uri: lb://user-service
               predicates:
-                - Path=/api/v1/auth/**,/api/v1/users/**,/api/v1/students/**,/api/v1/teachers/**,/api/v1/classes/**,/api/v1/sections/**
+                - Path=/user-service/**
               filters:
+                - StripPrefix=1
                 - name: CircuitBreaker
                   args:
+                    id: userServiceCircuitBreaker
                     name: userServiceCircuitBreaker
                     fallbackUri: forward:/fallback
             - id: academic-service
               uri: lb://academic-service
               predicates:
-                - Path=/api/v1/attendance/**,/api/v1/homework/**,/api/v1/results/**,/api/v1/exam-schedule/**
+                - Path=/academic-service/**
               filters:
+                - StripPrefix=1
                 - name: CircuitBreaker
                   args:
+                    id: academicServiceCircuitBreaker
                     name: academicServiceCircuitBreaker
                     fallbackUri: forward:/fallback
             - id: payment-service
               uri: lb://payment-service
               predicates:
-                - Path=/api/v1/fees/**,/api/v1/fee-structure/**,/api/v1/payments/**,/api/v1/payment-reminders/**
+                - Path=/payment-service/**
               filters:
+                - StripPrefix=1
                 - name: CircuitBreaker
                   args:
+                    id: paymentServiceCircuitBreaker
                     name: paymentServiceCircuitBreaker
                     fallbackUri: forward:/fallback
             - id: notification-service
               uri: lb://notification-service
               predicates:
-                - Path=/api/v1/notifications/**,/api/v1/notification-channels/**,/api/v1/notification-templates/**
+                - Path=/notification-service/**
               filters:
+                - StripPrefix=1
                 - name: CircuitBreaker
                   args:
+                    id: notificationServiceCircuitBreaker
                     name: notificationServiceCircuitBreaker
                     fallbackUri: forward:/fallback
             - id: communication-service
               uri: lb://communication-service
               predicates:
-                - Path=/api/v1/announcements/**,/api/v1/events/**,/api/v1/leave-applications/**
+                - Path=/communication-service/**
               filters:
+                - StripPrefix=1
                 - name: CircuitBreaker
                   args:
+                    id: communicationServiceCircuitBreaker
                     name: communicationServiceCircuitBreaker
                     fallbackUri: forward:/fallback
             - id: utility-service
               uri: lb://utility-service
               predicates:
-                - Path=/api/v1/files/**,/api/v1/reports/**
+                - Path=/utility-service/**
               filters:
+                - StripPrefix=1
                 - name: CircuitBreaker
                   args:
+                    id: utilityServiceCircuitBreaker
                     name: utilityServiceCircuitBreaker
                     fallbackUri: forward:/fallback
 
