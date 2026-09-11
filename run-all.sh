@@ -61,7 +61,7 @@ export CIRCUIT_BREAKER_FAILURE_RATE_THRESHOLD="${CIRCUIT_BREAKER_FAILURE_RATE_TH
 export CIRCUIT_BREAKER_WAIT_DURATION="${CIRCUIT_BREAKER_WAIT_DURATION:-10s}"
 
 SERVICE_MODULES=(
-  #"user-service"
+  "user-service"
   "academic-service"
   "payment-service"
   "notification-service"
