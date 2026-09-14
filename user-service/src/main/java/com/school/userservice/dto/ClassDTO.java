@@ -12,8 +12,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class ClassDTO {
     private Long id;
-
-    @NotBlank(message = "Class ID is required")
     private Long classId;
     
     @NotBlank(message = "Class name is required")

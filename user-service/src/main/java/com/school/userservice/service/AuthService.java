@@ -30,10 +30,9 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
 
     public LoginResponseDTO register(UserRegistrationDTO registrationDTO) {
-        log.info("Registering new user with email: {}", registrationDTO.getEmail());
 
-        if (userRepository.existsByEmail(registrationDTO.getEmail())) {
-            throw new DuplicateResourceException("User", "email", registrationDTO.getEmail());
+        if (userRepository.existsByUsername(registrationDTO.getUsername())) {
+            throw new DuplicateResourceException("User", "username", registrationDTO.getUsername());
         }
 
         if (userRepository.existsByUsername(registrationDTO.getUsername())) {
@@ -42,7 +41,6 @@ public class AuthService {
 
         User user = User.builder()
                 .username(registrationDTO.getUsername())
-                .email(registrationDTO.getEmail())
                 .password(passwordEncoder.encode(registrationDTO.getPassword()))
                 .phoneNumber(registrationDTO.getPhoneNumber())
                 .isActive(true)
@@ -70,7 +68,6 @@ public class AuthService {
         return LoginResponseDTO.builder()
                 .username(user.getUsername())
                 .username(user.getUsername())
-                .email(user.getEmail())
                 .token(token)
                 .roles(roles)
                 .isActive(true)
@@ -103,7 +100,6 @@ public class AuthService {
         return LoginResponseDTO.builder()
                 .id(user.getId())
                 .username(user.getUsername())
-                .email(user.getEmail())
                 .token(token)
                 .roles(roles)
                 .isActive(user.getIsActive())

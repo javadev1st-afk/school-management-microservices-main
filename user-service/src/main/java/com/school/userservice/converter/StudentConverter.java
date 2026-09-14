@@ -17,6 +17,8 @@ public class StudentConverter {
         }
         return StudentDTO.builder()
                 .id(student.getId())
+                .name(student.getName())
+                .email(student.getEmail())
                 .admissionNumber(student.getAdmissionNumber())
                 .rollNumber(student.getRollNumber())
                 .classId(student.getClassId())
@@ -35,6 +37,8 @@ public class StudentConverter {
         }
         return Student.builder()
                 .id(studentDTO.getId())
+                .email(studentDTO.getEmail())
+                .name(studentDTO.getName())
                 .admissionNumber(studentDTO.getAdmissionNumber())
                 .rollNumber(studentDTO.getRollNumber())
                 .classId(studentDTO.getClassId())

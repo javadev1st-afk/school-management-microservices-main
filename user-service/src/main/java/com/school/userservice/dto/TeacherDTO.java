@@ -15,6 +15,11 @@ import java.time.LocalDate;
 public class TeacherDTO {
     private Long id;
 
+    @NotBlank(message = "Name is required")
+    private String name;
+    @NotBlank(message = "Email is required")
+    private String email;
+
     @NotNull(message = "Username is required")
     private String username;
 
@@ -25,4 +30,7 @@ public class TeacherDTO {
     private String specialization;
     private LocalDate joiningDate;
     private Integer experienceYears;
+    private String address;
+    @NotBlank(message = "Phone number is required")
+    private String phone;
 }
