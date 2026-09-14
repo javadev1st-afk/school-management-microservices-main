@@ -8,7 +8,8 @@ import java.util.Optional;
 
 @Repository
 public interface ResultRepository extends JpaRepository<Result, Long> {
-    Optional<Result> findByStudentIdAndExamScheduleIdAndSubjectId(Long studentId, Long examScheduleId, Long subjectId);
-    List<Result> findByStudentId(Long studentId);
+    Optional<Result> findByAdmissionNumberAndExamScheduleIdAndSubjectId(Long admissionNumber, Long examScheduleId, Long subjectId);
+    List<Result> findByAdmissionNumber(Long admissionNumber);
+    List<Result> findByAdmissionNumberAndClassId(Long admissionNumber, Long classId);
     List<Result> findByExamScheduleId(Long examScheduleId);
 }

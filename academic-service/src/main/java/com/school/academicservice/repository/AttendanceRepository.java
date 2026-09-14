@@ -9,8 +9,9 @@ import java.util.Optional;
 
 @Repository
 public interface AttendanceRepository extends JpaRepository<Attendance, Long> {
-    Optional<Attendance> findByStudentIdAndAttendanceDate(Long studentId, LocalDate attendanceDate);
-    List<Attendance> findByStudentId(Long studentId);
-    List<Attendance> findByClassIdAndSectionIdAndAttendanceDate(Long classId, Long sectionId, LocalDate attendanceDate);
-    List<Attendance> findByStudentIdAndAttendanceDateBetween(Long studentId, LocalDate fromDate, LocalDate toDate);
+    Optional<Attendance> findByAdmissionNumberAndAttendanceDate(Long admissionNumber, LocalDate attendanceDate);
+    List<Attendance> findByAdmissionNumber(Long admissionNumber);
+    List<Attendance> findByAdmissionNumberAndClassId(Long admissionNumber, Long classId);
+    List<Attendance> findByClassIdAndSectionNameAndAttendanceDate(Long classId, String sectionName, LocalDate attendanceDate);
+    List<Attendance> findByAdmissionNumberAndAttendanceDateBetween(Long admissionNumber, LocalDate fromDate, LocalDate toDate);
 }

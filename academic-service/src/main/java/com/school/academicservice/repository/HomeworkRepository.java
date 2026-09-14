@@ -8,8 +8,8 @@ import java.util.List;
 
 @Repository
 public interface HomeworkRepository extends JpaRepository<Homework, Long> {
-    List<Homework> findByClassIdAndSectionId(Long classId, Long sectionId);
+    List<Homework> findByClassIdAndSectionName(Long classId, String sectionName);
     List<Homework> findByTeacherId(Long teacherId);
     List<Homework> findByDueDateBetween(LocalDate fromDate, LocalDate toDate);
-    List<Homework> findByClassIdAndSectionIdAndSubjectId(Long classId, Long sectionId, Long subjectId);
+    List<Homework> findByClassIdAndSectionNameAndSubjectId(Long classId, String sectionName, Long subjectId);
 }

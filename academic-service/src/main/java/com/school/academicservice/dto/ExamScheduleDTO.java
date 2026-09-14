@@ -22,8 +22,8 @@ public class ExamScheduleDTO {
     @NotNull(message = "Class ID is required")
     private Long classId;
 
-    @NotNull(message = "Section ID is required")
-    private Long sectionId;
+    @NotNull(message = "Section name is required")
+    private String sectionName;
 
     @NotNull(message = "Subject ID is required")
     private Long subjectId;

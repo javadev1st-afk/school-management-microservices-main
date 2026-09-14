@@ -14,8 +14,8 @@ import jakarta.validation.constraints.Min;
 public class ResultDTO {
     private Long id;
 
-    @NotNull(message = "Student ID is required")
-    private Long studentId;
+    @NotNull(message = "Admission number is required")
+    private Long admissionNumber;
 
     @NotNull(message = "Exam schedule ID is required")
     private Long examScheduleId;

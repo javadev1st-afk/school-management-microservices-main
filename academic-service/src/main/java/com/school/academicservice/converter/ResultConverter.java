@@ -13,7 +13,7 @@ public class ResultConverter {
         }
         return ResultDTO.builder()
                 .id(result.getId())
-                .studentId(result.getStudentId())
+                .admissionNumber(result.getAdmissionNumber())
                 .examScheduleId(result.getExamScheduleId())
                 .subjectId(result.getSubjectId())
                 .marksObtained(result.getMarksObtained())
@@ -29,7 +29,7 @@ public class ResultConverter {
         }
         return Result.builder()
                 .id(resultDTO.getId())
-                .studentId(resultDTO.getStudentId())
+                .admissionNumber(resultDTO.getAdmissionNumber())
                 .examScheduleId(resultDTO.getExamScheduleId())
                 .subjectId(resultDTO.getSubjectId())
                 .marksObtained(resultDTO.getMarksObtained())

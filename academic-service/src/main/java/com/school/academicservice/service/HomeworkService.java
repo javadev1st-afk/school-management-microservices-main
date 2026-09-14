@@ -22,7 +22,7 @@ public class HomeworkService {
     private final HomeworkConverter homeworkConverter;
 
     public HomeworkDTO createHomework(HomeworkDTO homeworkDTO) {
-        log.info("Creating homework: {} for class: {} section: {}", homeworkDTO.getTitle(), homeworkDTO.getClassId(), homeworkDTO.getSectionId());
+        log.info("Creating homework: {} for class: {} section: {}", homeworkDTO.getTitle(), homeworkDTO.getClassId(), homeworkDTO.getSectionName());
         
         Homework homework = homeworkConverter.dtoToEntity(homeworkDTO);
         homework = homeworkRepository.save(homework);
@@ -37,9 +37,9 @@ public class HomeworkService {
         return homeworkConverter.entityToDTO(homework);
     }
 
-    public List<HomeworkDTO> getHomeworkByClassAndSection(Long classId, Long sectionId) {
-        log.info("Fetching homework for class: {} section: {}", classId, sectionId);
-        List<Homework> homeworks = homeworkRepository.findByClassIdAndSectionId(classId, sectionId);
+    public List<HomeworkDTO> getHomeworkByClassAndSection(Long classId, String sectionName) {
+        log.info("Fetching homework for class: {} section: {}", classId, sectionName);
+        List<Homework> homeworks = homeworkRepository.findByClassIdAndSectionName(classId, sectionName);
         return homeworks.stream()
                 .map(homeworkConverter::entityToDTO)
                 .collect(Collectors.toList());

@@ -8,12 +8,17 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 @Entity
 @Table(name = "homework")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@EntityListeners(AuditingEntityListener.class)
 public class Homework {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,10 +30,10 @@ public class Homework {
     @Column(name = "class_id", nullable = false)
     private Long classId;
 
-    @Column(name = "section_id", nullable = false)
-    private Long sectionId;
+    @Column(name = "section_name", nullable = false)
+    private String sectionName;
 
-    @Column(name = "subject_id", nullable = false)
+    @Column(name = "subject_id")
     private Long subjectId;
 
     @Column(nullable = false)
@@ -44,13 +49,12 @@ public class Homework {
     private LocalDate dueDate;
 
     @Column(name = "created_at", nullable = false, updatable = false)
-    private LocalDateTime createdAt = LocalDateTime.now();
+    @CreatedDate 
+    private LocalDateTime createdAt;
 
     @Column(name = "updated_at")
-    private LocalDateTime updatedAt = LocalDateTime.now();
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
 
-    @PreUpdate
-    public void preUpdate() {
-        this.updatedAt = LocalDateTime.now();
-    }
+    private String tag; // New field for homework tag
 }

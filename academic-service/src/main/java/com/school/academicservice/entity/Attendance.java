@@ -8,19 +8,25 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 @Entity
 @Table(name = "attendance")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@Builder 
+
+@EntityListeners(AuditingEntityListener.class)
 public class Attendance {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "student_id", nullable = false)
-    private Long studentId;
+    @Column(name = "admission_number", nullable = false)
+    private Long admissionNumber;
 
     @Column(name = "teacher_id", nullable = false)
     private Long teacherId;
@@ -28,8 +34,8 @@ public class Attendance {
     @Column(name = "class_id", nullable = false)
     private Long classId;
 
-    @Column(name = "section_id", nullable = false)
-    private Long sectionId;
+    @Column(name = "section_name", nullable = false)
+    private String sectionName;
 
     @Column(name = "attendance_date", nullable = false)
     private LocalDate attendanceDate;
@@ -41,13 +47,10 @@ public class Attendance {
     private String remarks;
 
     @Column(name = "created_at", nullable = false, updatable = false)
-    private LocalDateTime createdAt = LocalDateTime.now();
+    @CreatedDate
+    private LocalDateTime createdAt;
 
     @Column(name = "updated_at")
-    private LocalDateTime updatedAt = LocalDateTime.now();
-
-    @PreUpdate
-    public void preUpdate() {
-        this.updatedAt = LocalDateTime.now();
-    }
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
 }

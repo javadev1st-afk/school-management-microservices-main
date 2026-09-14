@@ -23,10 +23,10 @@ public class ResultService {
     private final ResultConverter resultConverter;
 
     public ResultDTO publishResult(ResultDTO resultDTO) {
-        log.info("Publishing result for student: {} exam: {}", resultDTO.getStudentId(), resultDTO.getExamScheduleId());
+        log.info("Publishing result for student: {} exam: {}", resultDTO.getAdmissionNumber(), resultDTO.getExamScheduleId());
         
-        if (resultRepository.findByStudentIdAndExamScheduleIdAndSubjectId(resultDTO.getStudentId(), resultDTO.getExamScheduleId(), resultDTO.getSubjectId()).isPresent()) {
-            throw new DuplicateResourceException("Result", "studentId and examScheduleId and subjectId", resultDTO.getStudentId());
+        if (resultRepository.findByAdmissionNumberAndExamScheduleIdAndSubjectId(resultDTO.getAdmissionNumber(), resultDTO.getExamScheduleId(), resultDTO.getSubjectId()).isPresent()) {
+            throw new DuplicateResourceException("Result", "admissionNumber and examScheduleId and subjectId", resultDTO.getAdmissionNumber());
         }
 
         Result result = resultConverter.dtoToEntity(resultDTO);
@@ -43,9 +43,9 @@ public class ResultService {
         return resultConverter.entityToDTO(result);
     }
 
-    public List<ResultDTO> getResultByStudent(Long studentId) {
-        log.info("Fetching results for student: {}", studentId);
-        List<Result> results = resultRepository.findByStudentId(studentId);
+    public List<ResultDTO> getResultByStudent(Long admissionNumber) {
+        log.info("Fetching results for student: {}", admissionNumber);
+        List<Result> results = resultRepository.findByAdmissionNumber(admissionNumber);
         return results.stream()
                 .map(resultConverter::entityToDTO)
                 .collect(Collectors.toList());

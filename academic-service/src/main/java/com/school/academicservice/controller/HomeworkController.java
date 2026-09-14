@@ -45,14 +45,14 @@ public class HomeworkController {
         return ResponseEntity.ok(ApiResponse.success(response));
     }
 
-    @GetMapping("/class/{classId}/section/{sectionId}")
+    @GetMapping("/class/{classId}/section/{sectionName}")
     @PreAuthorize("hasAnyRole('ADMIN', 'TEACHER', 'STUDENT')")
     @Operation(summary = "Get homework by class and section")
     public ResponseEntity<ApiResponse<List<HomeworkDTO>>> getHomeworkByClassAndSection(
             @PathVariable Long classId,
-            @PathVariable Long sectionId) {
-        log.info("Get homework request for class: {} section: {}", classId, sectionId);
-        List<HomeworkDTO> response = homeworkService.getHomeworkByClassAndSection(classId, sectionId);
+            @PathVariable String sectionName) {
+        log.info("Get homework request for class: {} section: {}", classId, sectionName);
+        List<HomeworkDTO> response = homeworkService.getHomeworkByClassAndSection(classId, sectionName);
         return ResponseEntity.ok(ApiResponse.success(response));
     }
 
