@@ -1,1 +1,1 @@
-id,userName,employeeId,qualification,specialization,joiningDate,experienceYears
+id,email,name,username,employeeId,qualification,specialization,joiningDate,experienceYears,phone,address

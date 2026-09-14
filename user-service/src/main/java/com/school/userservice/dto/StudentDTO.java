@@ -14,6 +14,8 @@ import java.time.LocalDate;
 @Builder
 public class StudentDTO {
     private Long id;
+    private String name;
+    private String email;
 
     @NotNull(message = "admissionNumber is required")
     private String admissionNumber;

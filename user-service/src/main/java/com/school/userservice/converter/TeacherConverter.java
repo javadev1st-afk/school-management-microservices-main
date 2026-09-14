@@ -15,12 +15,14 @@ public class TeacherConverter {
         }
         return TeacherDTO.builder()
                 .id(teacher.getId())
+                .name(teacher.getName())
                 .username(teacher.getUsername())
                 .employeeId(teacher.getEmployeeId())
                 .qualification(teacher.getQualification())
                 .specialization(teacher.getSpecialization())
                 .joiningDate(teacher.getJoiningDate())
                 .experienceYears(teacher.getExperienceYears())
+                .email(teacher.getEmail())
                 .build();
     }
 
@@ -30,6 +32,8 @@ public class TeacherConverter {
         }
         return Teacher.builder()
                 .id(teacherDTO.getId())
+                .name(teacherDTO.getName())
+                .email(teacherDTO.getEmail())
                 .username(teacherDTO.getUsername())
                 .employeeId(teacherDTO.getEmployeeId())
                 .qualification(teacherDTO.getQualification())

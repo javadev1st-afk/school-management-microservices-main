@@ -34,6 +34,12 @@ public class Student {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "name", nullable = false)
+    private String name;
+
+    @Column(name = "email", nullable = false, unique = true)
+    private String email;
+
     @Column(name = "admission_number", nullable = false, unique = true)
     private String admissionNumber;
 
