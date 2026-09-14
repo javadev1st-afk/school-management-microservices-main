@@ -23,10 +23,10 @@ public class AttendanceService {
     private final AttendanceConverter attendanceConverter;
 
     public AttendanceDTO markAttendance(AttendanceDTO attendanceDTO) {
-        log.info("Marking attendance for student: {} on date: {}", attendanceDTO.getStudentId(), attendanceDTO.getAttendanceDate());
+        log.info("Marking attendance for student: {} on date: {}", attendanceDTO.getAdmissionNumber(), attendanceDTO.getAttendanceDate());
         
-        if (attendanceRepository.findByStudentIdAndAttendanceDate(attendanceDTO.getStudentId(), attendanceDTO.getAttendanceDate()).isPresent()) {
-            throw new DuplicateResourceException("Attendance", "studentId and attendanceDate", attendanceDTO.getStudentId());
+        if (attendanceRepository.findByAdmissionNumberAndAttendanceDate(attendanceDTO.getAdmissionNumber(), attendanceDTO.getAttendanceDate()).isPresent()) {
+            throw new DuplicateResourceException("Attendance", "admissionNumber and attendanceDate", attendanceDTO.getAdmissionNumber());
         }
 
         Attendance attendance = attendanceConverter.dtoToEntity(attendanceDTO);
@@ -42,25 +42,25 @@ public class AttendanceService {
         return attendanceConverter.entityToDTO(attendance);
     }
 
-    public List<AttendanceDTO> getStudentAttendance(Long studentId) {
-        log.info("Fetching attendance for student: {}", studentId);
-        List<Attendance> attendances = attendanceRepository.findByStudentId(studentId);
+    public List<AttendanceDTO> getStudentAttendance(Long admissionNumber, Long classId) {
+        log.info("Fetching attendance for student: {}", admissionNumber);
+        List<Attendance> attendances = attendanceRepository.findByAdmissionNumberAndClassId(admissionNumber, classId);
         return attendances.stream()
                 .map(attendanceConverter::entityToDTO)
                 .collect(Collectors.toList());
     }
 
-    public List<AttendanceDTO> getStudentAttendanceBetweenDates(Long studentId, LocalDate fromDate, LocalDate toDate) {
-        log.info("Fetching attendance for student: {} between {} and {}", studentId, fromDate, toDate);
-        List<Attendance> attendances = attendanceRepository.findByStudentIdAndAttendanceDateBetween(studentId, fromDate, toDate);
+    public List<AttendanceDTO> getStudentAttendanceBetweenDates(Long admissionNumber, LocalDate fromDate, LocalDate toDate) {
+        log.info("Fetching attendance for student: {} between {} and {}", admissionNumber, fromDate, toDate);
+        List<Attendance> attendances = attendanceRepository.findByAdmissionNumberAndAttendanceDateBetween(admissionNumber, fromDate, toDate);
         return attendances.stream()
                 .map(attendanceConverter::entityToDTO)
                 .collect(Collectors.toList());
     }
 
-    public List<AttendanceDTO> getClassSectionAttendance(Long classId, Long sectionId, LocalDate attendanceDate) {
-        log.info("Fetching attendance for class: {} section: {} on date: {}", classId, sectionId, attendanceDate);
-        List<Attendance> attendances = attendanceRepository.findByClassIdAndSectionIdAndAttendanceDate(classId, sectionId, attendanceDate);
+    public List<AttendanceDTO> getClassSectionAttendance(Long classId, String sectionName, LocalDate attendanceDate) {
+        log.info("Fetching attendance for class: {} section: {} on date: {}", classId, sectionName, attendanceDate);
+        List<Attendance> attendances = attendanceRepository.findByClassIdAndSectionNameAndAttendanceDate(classId, sectionName, attendanceDate);
         return attendances.stream()
                 .map(attendanceConverter::entityToDTO)
                 .collect(Collectors.toList());

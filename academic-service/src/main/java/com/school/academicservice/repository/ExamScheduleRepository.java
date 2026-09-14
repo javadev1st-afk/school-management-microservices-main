@@ -8,7 +8,7 @@ import java.util.List;
 
 @Repository
 public interface ExamScheduleRepository extends JpaRepository<ExamSchedule, Long> {
-    List<ExamSchedule> findByClassIdAndSectionId(Long classId, Long sectionId);
+    List<ExamSchedule> findByClassIdAndSectionName(Long classId, String sectionName);
     List<ExamSchedule> findByExamDateBetween(LocalDate fromDate, LocalDate toDate);
-    List<ExamSchedule> findByClassIdAndSectionIdAndSubjectId(Long classId, Long sectionId, Long subjectId);
+    List<ExamSchedule> findByClassIdAndSectionNameAndSubjectId(Long classId, String sectionName, Long subjectId);
 }

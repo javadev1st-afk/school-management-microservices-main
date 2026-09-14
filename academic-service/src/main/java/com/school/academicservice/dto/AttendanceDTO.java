@@ -14,8 +14,8 @@ import java.time.LocalDate;
 public class AttendanceDTO {
     private Long id;
 
-    @NotNull(message = "Student ID is required")
-    private Long studentId;
+    @NotNull(message = "Admission number is required")
+    private Long admissionNumber;
 
     @NotNull(message = "Teacher ID is required")
     private Long teacherId;
@@ -23,8 +23,8 @@ public class AttendanceDTO {
     @NotNull(message = "Class ID is required")
     private Long classId;
 
-    @NotNull(message = "Section ID is required")
-    private Long sectionId;
+    @NotNull(message = "Section name is required")
+    private String sectionName;
 
     @NotNull(message = "Attendance date is required")
     private LocalDate attendanceDate;

@@ -21,10 +21,9 @@ public class HomeworkDTO {
     @NotNull(message = "Class ID is required")
     private Long classId;
 
-    @NotNull(message = "Section ID is required")
-    private Long sectionId;
+    @NotNull(message = "Section name is required")
+    private String sectionName;
 
-    @NotNull(message = "Subject ID is required")
     private Long subjectId;
 
     @NotBlank(message = "Title is required")
@@ -36,4 +35,6 @@ public class HomeworkDTO {
 
     @NotNull(message = "Due date is required")
     private LocalDate dueDate;
+
+    private String tag;
 }

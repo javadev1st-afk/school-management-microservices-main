@@ -22,7 +22,7 @@ public class ExamScheduleService {
     private final ExamScheduleConverter examScheduleConverter;
 
     public ExamScheduleDTO createExamSchedule(ExamScheduleDTO examScheduleDTO) {
-        log.info("Creating exam schedule: {} for class: {} section: {}", examScheduleDTO.getExamName(), examScheduleDTO.getClassId(), examScheduleDTO.getSectionId());
+        log.info("Creating exam schedule: {} for class: {} section: {}", examScheduleDTO.getExamName(), examScheduleDTO.getClassId(), examScheduleDTO.getSectionName());
         
         ExamSchedule examSchedule = examScheduleConverter.dtoToEntity(examScheduleDTO);
         examSchedule = examScheduleRepository.save(examSchedule);
@@ -37,9 +37,9 @@ public class ExamScheduleService {
         return examScheduleConverter.entityToDTO(examSchedule);
     }
 
-    public List<ExamScheduleDTO> getExamScheduleByClassAndSection(Long classId, Long sectionId) {
-        log.info("Fetching exam schedule for class: {} section: {}", classId, sectionId);
-        List<ExamSchedule> examSchedules = examScheduleRepository.findByClassIdAndSectionId(classId, sectionId);
+    public List<ExamScheduleDTO> getExamScheduleByClassAndSection(Long classId, String sectionName) {
+        log.info("Fetching exam schedule for class: {} section: {}", classId, sectionName);
+        List<ExamSchedule> examSchedules = examScheduleRepository.findByClassIdAndSectionName(classId, sectionName);
         return examSchedules.stream()
                 .map(examScheduleConverter::entityToDTO)
                 .collect(Collectors.toList());

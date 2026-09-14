@@ -15,12 +15,13 @@ public class HomeworkConverter {
                 .id(homework.getId())
                 .teacherId(homework.getTeacherId())
                 .classId(homework.getClassId())
-                .sectionId(homework.getSectionId())
+                .sectionName(homework.getSectionName())
                 .subjectId(homework.getSubjectId())
                 .title(homework.getTitle())
                 .description(homework.getDescription())
                 .fileUrl(homework.getFileUrl())
                 .dueDate(homework.getDueDate())
+                .tag(homework.getTag())
                 .build();
     }
 
@@ -32,12 +33,13 @@ public class HomeworkConverter {
                 .id(homeworkDTO.getId())
                 .teacherId(homeworkDTO.getTeacherId())
                 .classId(homeworkDTO.getClassId())
-                .sectionId(homeworkDTO.getSectionId())
+                .sectionName(homeworkDTO.getSectionName())
                 .subjectId(homeworkDTO.getSubjectId())
                 .title(homeworkDTO.getTitle())
                 .description(homeworkDTO.getDescription())
                 .fileUrl(homeworkDTO.getFileUrl())
                 .dueDate(homeworkDTO.getDueDate())
+                .tag(homeworkDTO.getTag())
                 .build();
     }
 }
