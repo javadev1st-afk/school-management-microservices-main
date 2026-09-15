@@ -12,6 +12,8 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.school.common.enums.AttendanceStatus;
+
 @Entity
 @Table(name = "attendance")
 @Data
@@ -40,7 +42,8 @@ public class Attendance {
     private LocalDate attendanceDate;
 
     @Column(nullable = false)
-    private String status; // PRESENT, ABSENT, LEAVE, SICK_LEAVE
+    @Enumerated(EnumType.STRING)
+    private AttendanceStatus status;
 
     @Column(length = 255)
     private String remarks;

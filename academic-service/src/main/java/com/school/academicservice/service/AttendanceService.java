@@ -3,6 +3,7 @@ package com.school.academicservice.service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
@@ -48,7 +49,7 @@ public class AttendanceService {
 			Attendance existingAtt = attendanceRepository.findByAdmissionNumberAndAttendanceDate(
 					attendanceDTO.getAdmissionNumber(), attendanceDTO.getAttendanceDate()).orElse(null);
 			if (existingAtt != null
-					&& !existingAtt.getStatus().equalsIgnoreCase(attendanceDTO.getStatus())) {
+					&& !Objects.equals(existingAtt.getStatus(), attendanceDTO.getStatus())) {
 				existingAtt.setStatus(attendanceDTO.getStatus());
 				attList.add(existingAtt);
 			} else {

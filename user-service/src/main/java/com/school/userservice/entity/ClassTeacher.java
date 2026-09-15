@@ -13,51 +13,37 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
-@Table(name = "sections")
+@Entity(name = "class_teacher")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @EntityListeners(AuditingEntityListener.class)
-public class Section {
-    @Id
+public class ClassTeacher {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @Column(name = "class_id", nullable = false)
     private Long classId;
-
     @Column(name = "section_name", nullable = false)
     private String sectionName;
+    @Column(name = "teacher_id", nullable = false)
+    private Long teacherId;
 
-    @Column(name = "capacity")
-    private Integer capacity;
-
-    @Column(name = "is_active")
-    @Builder.Default
-    private Boolean isActive = true;
-
-    @Column(name = "created_at", nullable = false, updatable = false)
-    @CreatedDate
+    @CreatedDate 
     private LocalDateTime createdAt;
 
-    @Column(name = "updated_at")
+    @CreatedBy 
+    private String createdBy;
+
     @LastModifiedDate
     private LocalDateTime updatedAt;
-    
-    @Column(name = "created_by", updatable = false)
-    @CreatedBy
-    private String createdBy;
-    
-    @Column(name = "updated_by", nullable = false)
+
     @LastModifiedBy
     private String updatedBy;
+    
 }
