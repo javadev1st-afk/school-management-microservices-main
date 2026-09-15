@@ -12,6 +12,8 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.school.common.enums.ClassWork;
+
 @Entity
 @Table(name = "homework")
 @Data
@@ -56,5 +58,6 @@ public class Homework {
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
-    private String tag; // New field for homework tag
+    @Enumerated(EnumType.STRING)
+    private ClassWork workType;
 }

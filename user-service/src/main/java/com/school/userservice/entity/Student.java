@@ -16,13 +16,15 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "students")
+@Table(name = "students", uniqueConstraints = {@UniqueConstraint(columnNames = {"class_id", "section_name", "roll_number"}, name = "uk_class_section_roll")
+        })
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -40,10 +42,10 @@ public class Student {
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
-    @Column(name = "admission_number", nullable = false, unique = true)
+    @Column(name = "admission_number", nullable = false)
     private String admissionNumber;
 
-    @Column(name = "roll_number", unique = true, nullable = false)
+    @Column(name = "roll_number", nullable = false)
     private String rollNumber;
 
     @Column(name = "class_id", nullable = false)

@@ -3,6 +3,7 @@ package com.school.academicservice.service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
@@ -26,20 +27,10 @@ public class AttendanceService {
 	private final AttendanceRepository attendanceRepository;
 	private final AttendanceConverter attendanceConverter;
 
-	public AttendanceDTO markAttendance(AttendanceDTO attendanceDTO) {
+	public void markAttendance(AttendanceDTO attendanceDTO) {
 		log.info("Marking attendance for student: {} on date: {}", attendanceDTO.getAdmissionNumber(),
 				attendanceDTO.getAttendanceDate());
-
-		if (attendanceRepository.findByAdmissionNumberAndAttendanceDate(attendanceDTO.getAdmissionNumber(),
-				attendanceDTO.getAttendanceDate()).isPresent()) {
-			throw new DuplicateResourceException("Attendance", "admissionNumber and attendanceDate",
-					attendanceDTO.getAdmissionNumber());
-		}
-
-		Attendance attendance = attendanceConverter.dtoToEntity(attendanceDTO);
-		attendance = attendanceRepository.save(attendance);
-		log.info("Attendance marked successfully with id: {}", attendance.getId());
-		return attendanceConverter.entityToDTO(attendance);
+		markAttendanceForAll(List.of(attendanceDTO));
 	}
 
 	public void markAttendanceForAll(List<AttendanceDTO> attendanceDTOs) {
@@ -48,7 +39,7 @@ public class AttendanceService {
 			Attendance existingAtt = attendanceRepository.findByAdmissionNumberAndAttendanceDate(
 					attendanceDTO.getAdmissionNumber(), attendanceDTO.getAttendanceDate()).orElse(null);
 			if (existingAtt != null
-					&& !existingAtt.getStatus().equalsIgnoreCase(attendanceDTO.getStatus())) {
+					&& !Objects.equals(existingAtt.getStatus(), attendanceDTO.getStatus())) {
 				existingAtt.setStatus(attendanceDTO.getStatus());
 				attList.add(existingAtt);
 			} else {

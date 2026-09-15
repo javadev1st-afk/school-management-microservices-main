@@ -21,7 +21,7 @@ public class HomeworkConverter {
                 .description(homework.getDescription())
                 .fileUrl(homework.getFileUrl())
                 .dueDate(homework.getDueDate())
-                .tag(homework.getTag())
+                .workType(homework.getWorkType())
                 .build();
     }
 
@@ -39,7 +39,7 @@ public class HomeworkConverter {
                 .description(homeworkDTO.getDescription())
                 .fileUrl(homeworkDTO.getFileUrl())
                 .dueDate(homeworkDTO.getDueDate())
-                .tag(homeworkDTO.getTag())
+                .workType(homeworkDTO.getWorkType())
                 .build();
     }
 }

@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 
+import com.school.common.enums.AttendanceStatus;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -30,7 +32,7 @@ public class AttendanceDTO {
     private LocalDate attendanceDate;
 
     @NotNull(message = "Attendance status is required")
-    private String status; // PRESENT, ABSENT, LEAVE, SICK_LEAVE
+    private AttendanceStatus status;
 
     private String remarks;
 }
