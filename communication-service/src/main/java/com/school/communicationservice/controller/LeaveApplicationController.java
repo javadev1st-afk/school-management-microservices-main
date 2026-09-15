@@ -2,6 +2,7 @@ package com.school.communicationservice.controller;
 
 import com.school.communicationservice.dto.LeaveApplicationDTO;
 import com.school.communicationservice.service.LeaveApplicationService;
+import com.school.common.enums.LeaveStatus;
 import com.school.common.response.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -9,6 +10,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -32,18 +35,22 @@ public class LeaveApplicationController {
 
 	@GetMapping("/student/{admissionNumber}")
 	public ApiResponse<List<LeaveApplicationDTO>> byStudent(@PathVariable Long admissionNumber) {
-		return ApiResponse.success(service.byStudent(admissionNumber));
+		return ApiResponse.success(service.byStudentAdmissionNumber(admissionNumber));
+	}
+	@GetMapping("/student/{admissionNumber}/date/{date}")
+	public ApiResponse<List<LeaveApplicationDTO>> byStudentAndDate(@PathVariable Long admissionNumber, @PathVariable LocalDate date) {
+		return ApiResponse.success(service.byAdmissionNumberAndDate(admissionNumber, date));
 	}
 
 	@GetMapping
-	public ApiResponse<List<LeaveApplicationDTO>> byStatus(@RequestParam(defaultValue = "PENDING") String status) {
+	public ApiResponse<List<LeaveApplicationDTO>> byStatus(@RequestParam(defaultValue = "PENDING") LeaveStatus status) {
 		return ApiResponse.success(service.byStatus(status));
 	}
 
 	@PatchMapping("/{id}/decision")
-	public ApiResponse<LeaveApplicationDTO> decide(@PathVariable Long id, @RequestParam String status,
-			@RequestParam Long approvedBy, @RequestParam(required = false) String remarks) {
-		return ApiResponse.success(service.decide(id, status.toUpperCase(), approvedBy, remarks),
+	public ApiResponse<LeaveApplicationDTO> decide(@PathVariable Long id, @RequestParam LeaveStatus status,
+		 @RequestParam(required = false) String remarks) {
+		return ApiResponse.success(service.decide(id, status, remarks),
 				"Leave application updated successfully");
 	}
 }

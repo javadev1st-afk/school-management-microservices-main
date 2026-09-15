@@ -8,6 +8,8 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.school.common.enums.LeaveStatus;
+
 @Entity
 @Table(name = "leave_applications")
 @Getter
@@ -30,10 +32,11 @@ public class LeaveApplication {
 	private LocalDate toDate;
 	@Column(name = "total_days", nullable = false)
 	private Integer totalDays;
-	@Column(nullable = false, length = 20)// Pending, Approved, Rejected
-	private String status;
+	@Column(nullable = false, length = 20)
+    @Enumerated(EnumType.STRING)
+	private LeaveStatus status;
 	@Column(name = "approved_by")
-	private Long approvedBy;
+	private String approvedBy;
 	@Column(name = "approval_date")
 	private LocalDateTime approvalDate;
 	private String remarks;

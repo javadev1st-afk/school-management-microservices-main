@@ -4,10 +4,15 @@ import com.school.communicationservice.converter.LeaveApplicationConverter;
 import com.school.communicationservice.dto.LeaveApplicationDTO;
 import com.school.communicationservice.entity.LeaveApplication;
 import com.school.communicationservice.repository.LeaveApplicationRepository;
+import com.school.common.enums.LeaveStatus;
 import com.school.common.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -21,7 +26,7 @@ public class LeaveApplicationService {
 	public LeaveApplicationDTO apply(LeaveApplicationDTO dto) {
 		validateDates(dto);
 		dto.setTotalDays((int) (dto.getToDate().toEpochDay() - dto.getFromDate().toEpochDay() + 1));
-		dto.setStatus("PENDING");
+		dto.setStatus(LeaveStatus.PENDING);
 		return converter.toDto(repository.save(converter.toEntity(dto)));
 	}
 
@@ -31,19 +36,24 @@ public class LeaveApplicationService {
 	}
 
 	@Transactional(readOnly = true)
-	public List<LeaveApplicationDTO> byStudent(Long studentId) {
-		return repository.findByAdmissionNumberOrderByCreatedAtDesc(studentId).stream().map(converter::toDto).toList();
+	public List<LeaveApplicationDTO> byStudentAdmissionNumber(Long admissionNumber) {
+		return repository.findByAdmissionNumberOrderByCreatedAtDesc(admissionNumber).stream().map(converter::toDto).toList();
 	}
 
 	@Transactional(readOnly = true)
-	public List<LeaveApplicationDTO> byStatus(String status) {
+	public List<LeaveApplicationDTO> byAdmissionNumberAndDate(Long admissionNumber, LocalDate date) {
+		return repository.findByFromDateLessThanEqualAndToDateGreaterThanEqual(admissionNumber, date, date).stream().map(converter::toDto).toList();
+	}
+
+	@Transactional(readOnly = true)
+	public List<LeaveApplicationDTO> byStatus(LeaveStatus status) {
 		return repository.findByStatusOrderByCreatedAtAsc(status).stream().map(converter::toDto).toList();
 	}
 
-	public LeaveApplicationDTO decide(Long id, String status, Long approvedBy, String remarks) {
+	public LeaveApplicationDTO decide(Long id, LeaveStatus status, String remarks) {
 		LeaveApplication e = find(id);
 		e.setStatus(status);
-		e.setApprovedBy(approvedBy);
+		e.setApprovedBy(getLoginUserName());
 		e.setApprovalDate(LocalDateTime.now());
 		e.setRemarks(remarks);
 		return converter.toDto(repository.save(e));
@@ -56,5 +66,9 @@ public class LeaveApplicationService {
 
 	private LeaveApplication find(Long id) {
 		return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Leave application", "id", id));
+	}
+
+	private String getLoginUserName(){
+		 return SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
 	}
 }
