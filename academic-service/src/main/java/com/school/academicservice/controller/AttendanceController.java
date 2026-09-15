@@ -35,6 +35,15 @@ public class AttendanceController {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(ApiResponse.success(response, "Attendance marked successfully"));
     }
+    
+    @PostMapping("/mark/all")
+    @PreAuthorize("hasRole('TEACHER')")
+    @Operation(summary = "Mark attendance")
+    public ResponseEntity<ApiResponse<String>> markAttendanceForAll(@Valid @RequestBody List<AttendanceDTO> attendanceDTOs) {
+       attendanceService.markAttendanceForAll(attendanceDTOs);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(ApiResponse.success("Attendance marked successfully"));
+    }
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN', 'TEACHER', 'STUDENT')")

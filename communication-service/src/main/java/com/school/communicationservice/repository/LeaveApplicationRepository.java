@@ -5,6 +5,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface LeaveApplicationRepository extends JpaRepository<LeaveApplication, Long> {
-    List<LeaveApplication> findByStudentIdOrderByCreatedAtDesc(Long studentId);
-    List<LeaveApplication> findByStatusOrderByCreatedAtAsc(String status);
+	List<LeaveApplication> findByAdmissionNumberOrderByCreatedAtDesc(Long admissionNumber);
+
+	List<LeaveApplication> findByStatusOrderByCreatedAtAsc(String status);
+
+	List<LeaveApplication> findByStatusAndApprovedByOrderByCreatedAtAsc(String status, Long approvedBy);
+
 }

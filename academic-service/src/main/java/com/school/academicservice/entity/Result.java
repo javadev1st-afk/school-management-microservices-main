@@ -39,6 +39,7 @@ public class Result {
     private Integer marksObtained;
 
     @Column(name = "out_of", nullable = false)
+    @Builder.Default
     private Integer outOf = 100;
 
     @Column(length = 10)

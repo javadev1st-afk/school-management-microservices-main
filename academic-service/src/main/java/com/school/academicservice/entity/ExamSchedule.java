@@ -50,6 +50,7 @@ public class ExamSchedule {
     private String roomNumber;
 
     @Column(name = "max_marks")
+    @Builder.Default
     private Integer maxMarks = 100;
 
     @Column(name = "created_at", nullable = false, updatable = false)
