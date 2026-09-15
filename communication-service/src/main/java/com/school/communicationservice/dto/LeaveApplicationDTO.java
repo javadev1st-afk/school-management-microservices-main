@@ -4,6 +4,8 @@ import jakarta.validation.constraints.*;
 import lombok.*;
 import java.time.*;
 
+import com.school.common.enums.LeaveStatus;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -19,8 +21,8 @@ public class LeaveApplicationDTO {
 	@NotNull
 	private LocalDate toDate;
 	private Integer totalDays;
-	private String status;
-	private Long approvedBy;
+	private LeaveStatus status;
+	private String approvedBy;
 	private LocalDateTime approvalDate;
 	private String remarks;
 }
