@@ -55,12 +55,12 @@ public class StudentController {
         return ResponseEntity.ok(ApiResponse.success(response));
     }
 
-    @GetMapping("/user/{username}")
+    @GetMapping("/admission/{admissionNumber}")
     @PreAuthorize("hasAnyRole('ADMIN', 'TEACHER', 'STUDENT')")
-    @Operation(summary = "Get student by user ID")
-    public ResponseEntity<ApiResponse<StudentDTO>> getStudentByUserId(@PathVariable String username) {
-        log.info("Get student request received for username: {}", username);
-        StudentDTO response = studentService.getStudentByUsernameOrAdmNumber(username);
+    @Operation(summary = "Get student by admission number")
+    public ResponseEntity<ApiResponse<StudentDTO>> getStudentByAdmissionNumber(@PathVariable Long admissionNumber) {
+        log.info("Get student request received for admission number: {}", admissionNumber);
+        StudentDTO response = studentService.getStudentByUsernameOrAdmNumber(admissionNumber);
         return ResponseEntity.ok(ApiResponse.success(response));
     }
 

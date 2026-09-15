@@ -18,10 +18,10 @@ public class StudentDTO {
     private String email;
 
     @NotNull(message = "admissionNumber is required")
-    private String admissionNumber;
+    private Long admissionNumber;
 
     @NotBlank(message = "Roll number is required")
-    private String rollNumber;
+    private Long rollNumber;
 
     @NotNull(message = "Class ID is required")
     private Long classId;

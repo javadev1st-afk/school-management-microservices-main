@@ -59,14 +59,14 @@ public class StudentService {
         return studentConverter.entityToDTO(student);
     }
 
-    public StudentDTO getStudentByUsernameOrAdmNumber(String username) {
-        log.info("Fetching student with admissionNumber/username: {}", username);
-        Student student = studentRepository.findByAdmissionNumber(username)
-                .orElseThrow(() -> new ResourceNotFoundException("Student", "admissionNumber/username", username));
+    public StudentDTO getStudentByUsernameOrAdmNumber(Long admissionNumber) {
+        log.info("Fetching student with admissionNumber/username: {}", admissionNumber);
+        Student student = studentRepository.findByAdmissionNumber(admissionNumber)
+                .orElseThrow(() -> new ResourceNotFoundException("Student", "admissionNumber/username", admissionNumber));
         return studentConverter.entityToDTO(student);
     }
 
-    public StudentDTO getStudentByRollNumber(String rollNumber) {
+    public StudentDTO getStudentByRollNumber(Long rollNumber) {
         log.info("Fetching student with roll number: {}", rollNumber);
         Student student = studentRepository.findByRollNumber(rollNumber)
                 .orElseThrow(() -> new ResourceNotFoundException("Student", "rollNumber", rollNumber));
@@ -147,9 +147,9 @@ public class StudentService {
                 long id = record.isMapped(Constants.IMPORT_STUDENT_COLUMN_ID) && !record.get(Constants.IMPORT_STUDENT_COLUMN_ID).isBlank() ? Long.parseLong(record.get(Constants.IMPORT_STUDENT_COLUMN_ID)) : 0;
                 boolean createLogin = record.isMapped(Constants.IMPORT_STUDENT_COLUMN_CREATE_LOGIN) ? BooleanUtils.toBoolean(record.get(Constants.IMPORT_STUDENT_COLUMN_CREATE_LOGIN)) : false;
                 boolean isDelete = record.isMapped(Constants.IMPORT_STUDENT_COLUMN_IS_DELETE) ? BooleanUtils.toBoolean(record.get(Constants.IMPORT_STUDENT_COLUMN_IS_DELETE)) : false;
-                String admissionNumber  = record.isMapped(Constants.IMPORT_STUDENT_COLUMN_ADMISSION_NUMBER) ? record.get(Constants.IMPORT_STUDENT_COLUMN_ADMISSION_NUMBER) : "";
-                String rollNumber = record.isMapped(Constants.IMPORT_STUDENT_COLUMN_ROLL_NUMBER) ? record.get(Constants.IMPORT_STUDENT_COLUMN_ROLL_NUMBER) : "";
-                String classId = record.isMapped(Constants.IMPORT_STUDENT_COLUMN_CLASS_ID) ? record.get(Constants.IMPORT_STUDENT_COLUMN_CLASS_ID) : "";
+                Long admissionNumber = record.isMapped(Constants.IMPORT_STUDENT_COLUMN_ADMISSION_NUMBER) ? Long.valueOf(record.get(Constants.IMPORT_STUDENT_COLUMN_ADMISSION_NUMBER)) : null;
+                Long rollNumber = record.isMapped(Constants.IMPORT_STUDENT_COLUMN_ROLL_NUMBER) ? Long.valueOf(record.get(Constants.IMPORT_STUDENT_COLUMN_ROLL_NUMBER)) : null;
+                Long classId = record.isMapped(Constants.IMPORT_STUDENT_COLUMN_CLASS_ID) ? Long.valueOf(record.get(Constants.IMPORT_STUDENT_COLUMN_CLASS_ID)) : null;
                 String sectionName = record.isMapped(Constants.IMPORT_STUDENT_COLUMN_SECTION_NAME) ? record.get(Constants.IMPORT_STUDENT_COLUMN_SECTION_NAME) : "";
                 String fatherName = record.isMapped(Constants.IMPORT_STUDENT_COLUMN_FATHER_NAME) ? record.get(Constants.IMPORT_STUDENT_COLUMN_FATHER_NAME) : "";
                 String motherName = record.isMapped(Constants.IMPORT_STUDENT_COLUMN_MOTHER_NAME) ? record.get(Constants.IMPORT_STUDENT_COLUMN_MOTHER_NAME) : "";
@@ -160,7 +160,7 @@ public class StudentService {
                 LocalDate dateOfBirthValue = Utills.getDateFromString(dateOfBirth);
 
                 if(createLogin) {
-                    createLoginUser(admissionNumber, Utills.generatePasswordFromDateOfBirth(dateOfBirthValue));
+                    createLoginUser(String.valueOf(admissionNumber), Utills.generatePasswordFromDateOfBirth(dateOfBirthValue));
                 }
 
                 if(id > 0) {
@@ -173,7 +173,7 @@ public class StudentService {
                             existingStudent.setName(name);
                             existingStudent.setAdmissionNumber(admissionNumber);
                             existingStudent.setRollNumber(rollNumber);
-                            existingStudent.setClassId(Long.valueOf(classId));
+                            existingStudent.setClassId(classId);
                             existingStudent.setSectionName(sectionName);
                             existingStudent.setFatherName(fatherName);
                             existingStudent.setMotherName(motherName);
@@ -193,7 +193,7 @@ public class StudentService {
                         .name(name)
                         .admissionNumber(admissionNumber)
                         .rollNumber(rollNumber)
-                        .classId(Long.valueOf(classId))
+                        .classId(classId)
                         .sectionName(sectionName)
                         .fatherName(fatherName)
                         .motherName(motherName)

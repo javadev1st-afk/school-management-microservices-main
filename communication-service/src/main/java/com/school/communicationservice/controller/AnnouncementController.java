@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.*;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -20,6 +21,7 @@ public class AnnouncementController {
 	private final AnnouncementService service;
 
 	@PostMapping
+	@PreAuthorize("hasAnyRole('ADMIN','TEACHER')")
 	public ResponseEntity<ApiResponse<AnnouncementDTO>> create(@Valid @RequestBody AnnouncementDTO dto) {
 		return ResponseEntity.status(HttpStatus.CREATED)
 				.body(ApiResponse.success(service.create(dto), "Announcement created successfully"));

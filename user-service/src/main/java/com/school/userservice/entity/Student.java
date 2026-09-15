@@ -43,10 +43,10 @@ public class Student {
     private String email;
 
     @Column(name = "admission_number", nullable = false)
-    private String admissionNumber;
+    private Long admissionNumber;
 
     @Column(name = "roll_number", nullable = false)
-    private String rollNumber;
+    private Long rollNumber;
 
     @Column(name = "class_id", nullable = false)
     private Long classId;

@@ -30,9 +30,9 @@ public class LeaveApplicationController {
 		return ApiResponse.success(service.get(id));
 	}
 
-	@GetMapping("/student/{studentId}")
-	public ApiResponse<List<LeaveApplicationDTO>> byStudent(@PathVariable Long studentId) {
-		return ApiResponse.success(service.byStudent(studentId));
+	@GetMapping("/student/{admissionNumber}")
+	public ApiResponse<List<LeaveApplicationDTO>> byStudent(@PathVariable Long admissionNumber) {
+		return ApiResponse.success(service.byStudent(admissionNumber));
 	}
 
 	@GetMapping
