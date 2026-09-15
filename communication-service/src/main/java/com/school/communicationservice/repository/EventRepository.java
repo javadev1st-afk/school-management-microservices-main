@@ -6,5 +6,5 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface EventRepository extends JpaRepository<Event, Long> {
-    List<Event> findByActiveTrueAndEventDateGreaterThanEqualOrderByEventDateAsc(LocalDate date);
+	List<Event> findByActiveTrueAndEventDateGreaterThanEqualOrderByEventDateAsc(LocalDate date);
 }

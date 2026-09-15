@@ -5,16 +5,22 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import java.time.LocalDateTime;
 
-@Data @Builder @NoArgsConstructor @AllArgsConstructor
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class AnnouncementDTO {
-    private Long id;
-    @NotNull private Long createdBy;
-    @NotBlank private String title;
-    @NotBlank private String content;
-    private String fileUrl;
-    private Long classId;
-    private Long sectionId;
-    private LocalDateTime postedDate;
-    private LocalDateTime expiresDate;
-    private Boolean active;
+	private Long id;
+	@NotNull
+	private Long createdBy;
+	@NotBlank
+	private String title;
+	@NotBlank
+	private String content;
+	private String fileUrl;
+	private Long classId;
+	private Long sectionName;
+	private LocalDateTime postedDate;
+	private LocalDateTime expiresDate;
+	private Boolean active;
 }

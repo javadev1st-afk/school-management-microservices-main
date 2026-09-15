@@ -18,7 +18,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder 
-
 @EntityListeners(AuditingEntityListener.class)
 public class Attendance {
     @Id
