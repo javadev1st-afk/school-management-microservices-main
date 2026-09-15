@@ -27,20 +27,10 @@ public class AttendanceService {
 	private final AttendanceRepository attendanceRepository;
 	private final AttendanceConverter attendanceConverter;
 
-	public AttendanceDTO markAttendance(AttendanceDTO attendanceDTO) {
+	public void markAttendance(AttendanceDTO attendanceDTO) {
 		log.info("Marking attendance for student: {} on date: {}", attendanceDTO.getAdmissionNumber(),
 				attendanceDTO.getAttendanceDate());
-
-		if (attendanceRepository.findByAdmissionNumberAndAttendanceDate(attendanceDTO.getAdmissionNumber(),
-				attendanceDTO.getAttendanceDate()).isPresent()) {
-			throw new DuplicateResourceException("Attendance", "admissionNumber and attendanceDate",
-					attendanceDTO.getAdmissionNumber());
-		}
-
-		Attendance attendance = attendanceConverter.dtoToEntity(attendanceDTO);
-		attendance = attendanceRepository.save(attendance);
-		log.info("Attendance marked successfully with id: {}", attendance.getId());
-		return attendanceConverter.entityToDTO(attendance);
+		markAttendanceForAll(List.of(attendanceDTO));
 	}
 
 	public void markAttendanceForAll(List<AttendanceDTO> attendanceDTOs) {

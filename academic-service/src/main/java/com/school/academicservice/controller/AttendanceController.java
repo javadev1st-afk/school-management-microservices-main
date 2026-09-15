@@ -29,11 +29,11 @@ public class AttendanceController {
     @PostMapping("/mark")
     @PreAuthorize("hasRole('TEACHER')")
     @Operation(summary = "Mark attendance")
-    public ResponseEntity<ApiResponse<AttendanceDTO>> markAttendance(@Valid @RequestBody AttendanceDTO attendanceDTO) {
+    public ResponseEntity<ApiResponse<String>> markAttendance(@Valid @RequestBody AttendanceDTO attendanceDTO) {
         log.info("Mark attendance request received for student: {}", attendanceDTO.getAdmissionNumber());
-        AttendanceDTO response = attendanceService.markAttendance(attendanceDTO);
+        attendanceService.markAttendance(attendanceDTO);
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(ApiResponse.success(response, "Attendance marked successfully"));
+                .body(ApiResponse.success("Attendance marked successfully"));
     }
     
     @PostMapping("/mark/all")

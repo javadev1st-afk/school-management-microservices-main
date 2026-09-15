@@ -23,6 +23,8 @@ public class TeacherConverter {
                 .joiningDate(teacher.getJoiningDate())
                 .experienceYears(teacher.getExperienceYears())
                 .email(teacher.getEmail())
+                .address(teacher.getAddress())
+                .phone(teacher.getPhone())
                 .build();
     }
 
@@ -40,6 +42,8 @@ public class TeacherConverter {
                 .specialization(teacherDTO.getSpecialization())
                 .joiningDate(teacherDTO.getJoiningDate())
                 .experienceYears(teacherDTO.getExperienceYears())
+                .address(teacherDTO.getAddress())
+                .phone(teacherDTO.getPhone())
                 .build();
     }
 }
