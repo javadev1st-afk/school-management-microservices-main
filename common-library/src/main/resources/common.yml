@@ -35,17 +35,14 @@ app:
     - /user-service/api/v1/auth/login/**
     - /user-service/api/v1/auth/register/**
     - /user-service/api/test/**
-    - /rest/user-service/api/v1/auth/login/**
-    - /rest/user-service/api/v1/auth/register/**
-    - /rest/user-service/api/test/**
     - /api/v1/auth/register/**
     - /api/v1/auth/login/**
     - /api/test/**
     - /internal/**
-    - /rest/v3/api-docs/**
-    - /rest/swagger-ui/**
+    - /v3/api-docs/**
+    - /swagger-ui/**
     - /swagger-ui.html
-    - /rest/swagger-ui/index.html
+    - /swagger-ui/index.html
     - /webjars/**
     - /swagger-resources/**
     - /configuration/**

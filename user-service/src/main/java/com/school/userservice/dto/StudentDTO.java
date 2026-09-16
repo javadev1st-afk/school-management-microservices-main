@@ -21,7 +21,7 @@ public class StudentDTO {
     @NotNull(message = "admissionNumber is required")
     private Long admissionNumber;
 
-    @NotBlank(message = "Roll number is required")
+    @NotNull(message = "Roll number is required")
     private Long rollNumber;
 
     @NotNull(message = "Class ID is required")

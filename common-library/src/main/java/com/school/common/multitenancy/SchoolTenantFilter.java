@@ -22,7 +22,7 @@ public class SchoolTenantFilter extends OncePerRequestFilter {
             HttpServletRequest request,
             HttpServletResponse response,
             FilterChain filterChain) throws ServletException, IOException {
-        if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
+        if ("OPTIONS".equalsIgnoreCase(request.getMethod()) || request.getRequestURI().contains("v3/api-docs") || request.getRequestURI().contains("swagger")) {
             filterChain.doFilter(request, response);
             return;
         }
