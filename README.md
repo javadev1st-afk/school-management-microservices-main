@@ -617,6 +617,10 @@ the `X-School-Name` header:
 X-School-Name: school_a
 ```
 
+Swagger UI includes the configured `DB_DEFAULT_SCHEMA` value as the
+`X-School-Name` header for requests made with **Try it out**. Change the
+header value in the request editor when testing another school.
+
 The common library validates the name (`A-Z`, `a-z`, `0-9`, and `_` only) and
 Hibernate switches the MySQL connection to that schema before executing the
 request. Configure the schema used during startup and for Hibernate metadata
