@@ -16,6 +16,8 @@ import static com.school.common.multitenancy.TenantContext.HEADER_NAME;
 @Configuration
 public class OpenApiConfig {
 
+    private static final String HEADER_PARAMETER_LOCATION = "header";
+
     @Bean
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
@@ -42,9 +44,9 @@ public class OpenApiConfig {
         if (operation.getParameters() == null
                 || operation.getParameters().stream()
                 .noneMatch(parameter -> HEADER_NAME.equalsIgnoreCase(parameter.getName())
-                        && Parameter.HEADER.equalsIgnoreCase(parameter.getIn()))) {
+                        && HEADER_PARAMETER_LOCATION.equalsIgnoreCase(parameter.getIn()))) {
             operation.addParametersItem(new Parameter()
-                    .in(Parameter.HEADER)
+                    .in(HEADER_PARAMETER_LOCATION)
                     .name(HEADER_NAME)
                     .description("School schema used for this request")
                     .required(true)
