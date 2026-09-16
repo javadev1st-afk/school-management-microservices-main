@@ -28,6 +28,8 @@ springdoc:
     path: /v3/api-docs
 
 app:
+  tenant:
+    default-schema: ${DB_DEFAULT_SCHEMA:school_management}
   open-endpoints:
     - /ui/**
     - /user-service/api/v1/auth/login/**
