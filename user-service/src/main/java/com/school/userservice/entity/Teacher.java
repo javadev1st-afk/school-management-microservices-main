@@ -37,6 +37,9 @@ public class Teacher {
     @Column(name = "name", nullable = false)
     private String name;
 
+    @Column(name = "gender")
+    private String gender;
+
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 

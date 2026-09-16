@@ -73,6 +73,7 @@ public class TeacherService {
                 .orElseThrow(() -> new ResourceNotFoundException("Teacher", "id", id));
 
         teacher.setQualification(teacherDTO.getQualification());
+        teacher.setGender(teacherDTO.getGender());
         teacher.setSpecialization(teacherDTO.getSpecialization());
         teacher.setJoiningDate(teacherDTO.getJoiningDate());
         teacher.setExperienceYears(teacherDTO.getExperienceYears());
@@ -129,10 +130,12 @@ public class TeacherService {
                 String address = record.get(Constants.IMPORT_TEACHER_COLUMN_ADDRESS);
                 String phone = record.get(Constants.IMPORT_TEACHER_COLUMN_PHONE);
                 String email = record.isMapped(Constants.IMPORT_TEACHER_COLUMN_EMAIL) ? record.get(Constants.IMPORT_TEACHER_COLUMN_EMAIL) : "";
+                String gender = record.isMapped(Constants.IMPORT_TEACHER_COLUMN_GENDER) ? record.get(Constants.IMPORT_TEACHER_COLUMN_GENDER) : "";
 
                 teachersToSave.add(Teacher.builder()
                         .id(id > 0 ? id : null)
                         .name(name)
+                        .gender(gender)
                         .email(email)
                         .username(userName)
                         .employeeId(employeeId)
@@ -157,6 +160,7 @@ public class TeacherService {
             CSVFormat csvFormat = CSVFormat.DEFAULT.builder().setHeader(
                 Constants.IMPORT_TEACHER_COLUMN_ID,
                 Constants.IMPORT_TEACHER_COLUMN_NAME,
+                Constants.IMPORT_TEACHER_COLUMN_GENDER,
                 Constants.IMPORT_TEACHER_COLUMN_EMAIL,
                 Constants.IMPORT_TEACHER_COLUMN_USERNAME,
                 Constants.IMPORT_TEACHER_COLUMN_EMPLOYEE_ID,
@@ -172,6 +176,7 @@ public class TeacherService {
             csvFormat.print(writer).printRecords(teachers.stream().map(t -> new Object[]{
                     t.getId(),
                     t.getName(),
+                    t.getGender(),
                     t.getEmail(),
                     t.getUsername(),
                     t.getEmployeeId(),

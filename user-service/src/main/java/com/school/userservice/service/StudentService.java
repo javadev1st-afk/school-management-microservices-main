@@ -94,6 +94,7 @@ public class StudentService {
 
         student.setFatherName(studentDTO.getFatherName());
         student.setMotherName(studentDTO.getMotherName());
+        student.setGender(studentDTO.getGender());
         student.setDateOfBirth(studentDTO.getDateOfBirth());
         student.setAddress(studentDTO.getAddress());
         student.setParentPhone(studentDTO.getParentPhone());
@@ -157,6 +158,7 @@ public class StudentService {
                 String address = record.isMapped(Constants.IMPORT_STUDENT_COLUMN_ADDRESS) ? record.get(Constants.IMPORT_STUDENT_COLUMN_ADDRESS) : "";
                 String parentPhone = record.isMapped(Constants.IMPORT_STUDENT_COLUMN_PARENT_PHONE) ? record.get(Constants.IMPORT_STUDENT_COLUMN_PARENT_PHONE) : "";
                 String email = record.isMapped(Constants.IMPORT_STUDENT_COLUMN_EMAIL) ? record.get(Constants.IMPORT_STUDENT_COLUMN_EMAIL) : "";
+                String gender = record.isMapped(Constants.IMPORT_STUDENT_COLUMN_GENDER) ? record.get(Constants.IMPORT_STUDENT_COLUMN_GENDER) : "";
                 LocalDate dateOfBirthValue = Utills.getDateFromString(dateOfBirth);
 
                 if(createLogin) {
@@ -171,6 +173,7 @@ public class StudentService {
                             continue;
                         } else {
                             existingStudent.setName(name);
+                            existingStudent.setGender(gender);
                             existingStudent.setAdmissionNumber(admissionNumber);
                             existingStudent.setRollNumber(rollNumber);
                             existingStudent.setClassId(classId);
@@ -191,6 +194,7 @@ public class StudentService {
                 }
                 Student student = Student.builder()
                         .name(name)
+                        .gender(gender)
                         .admissionNumber(admissionNumber)
                         .rollNumber(rollNumber)
                         .classId(classId)
@@ -217,6 +221,7 @@ public class StudentService {
             CSVFormat csvFormat = CSVFormat.DEFAULT.builder().setHeader(
                 Constants.IMPORT_STUDENT_COLUMN_ID,
                 Constants.IMPORT_STUDENT_COLUMN_NAME,
+                Constants.IMPORT_STUDENT_COLUMN_GENDER,
                 Constants.IMPORT_STUDENT_COLUMN_EMAIL,
                 Constants.IMPORT_STUDENT_COLUMN_ROLL_NUMBER,
                 Constants.IMPORT_STUDENT_COLUMN_ADMISSION_NUMBER,
@@ -243,6 +248,7 @@ public class StudentService {
             csvFormat.print(writer).printRecords(students.stream().map(s -> new Object[]{
                     s.getId(),
                     s.getName(),
+                    nullToEmpty(s.getGender()),
                     s.getEmail(),
                     s.getRollNumber(),
                     s.getAdmissionNumber(),
