@@ -72,6 +72,7 @@ CREATE TABLE IF NOT EXISTS sections (
 CREATE TABLE IF NOT EXISTS students (
     id BIGINT NOT NULL AUTO_INCREMENT,
     name VARCHAR(255) NOT NULL,
+    gender VARCHAR(255),
     email VARCHAR(255) NOT NULL,
     admission_number BIGINT NOT NULL,
     roll_number BIGINT NOT NULL,
@@ -94,6 +95,7 @@ CREATE TABLE IF NOT EXISTS students (
 CREATE TABLE IF NOT EXISTS teachers (
     id BIGINT NOT NULL AUTO_INCREMENT,
     name VARCHAR(255) NOT NULL,
+    gender VARCHAR(255),
     email VARCHAR(255) NOT NULL,
     username VARCHAR(255) NOT NULL,
     employee_id VARCHAR(255) NOT NULL,

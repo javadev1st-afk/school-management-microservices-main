@@ -17,6 +17,7 @@ public class TeacherDTO {
 
     @NotBlank(message = "Name is required")
     private String name;
+    private String gender;
     @NotBlank(message = "Email is required")
     private String email;
 

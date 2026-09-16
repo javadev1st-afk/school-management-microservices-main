@@ -3,6 +3,7 @@ package com.school.userservice;
 public class Constants {
     public static final String IMPORT_STUDENT_COLUMN_ID = "id";
     public static final String IMPORT_STUDENT_COLUMN_NAME = "name";
+    public static final String IMPORT_STUDENT_COLUMN_GENDER = "gender";
     public static final String IMPORT_STUDENT_COLUMN_EMAIL = "email";
     public static final String IMPORT_STUDENT_COLUMN_ROLL_NUMBER = "rollNumber";
     public static final String IMPORT_STUDENT_COLUMN_ADMISSION_NUMBER = "admissionNumber";
@@ -20,6 +21,7 @@ public class Constants {
     //id,name,username,employeeId,qualification,specialization,joiningDate,experienceYears
     public static final String IMPORT_TEACHER_COLUMN_ID = "id";
     public static final String IMPORT_TEACHER_COLUMN_NAME = "name";
+    public static final String IMPORT_TEACHER_COLUMN_GENDER = "gender";
     public static final String IMPORT_TEACHER_COLUMN_EMAIL = "email";
     public static final String IMPORT_TEACHER_COLUMN_USERNAME = "username";
     public static final String IMPORT_TEACHER_COLUMN_EMPLOYEE_ID = "employeeId";
