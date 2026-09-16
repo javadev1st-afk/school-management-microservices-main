@@ -15,14 +15,10 @@ PREPARE create_schema_statement FROM @create_schema_sql;
 EXECUTE create_schema_statement;
 DEALLOCATE PREPARE create_schema_statement;
 
-SET @use_schema_sql = CONCAT(
-    'USE `',
-    REPLACE(@schema_name, '`', '``'),
-    '`'
-);
-PREPARE use_schema_statement FROM @use_schema_sql;
-EXECUTE use_schema_statement;
-DEALLOCATE PREPARE use_schema_statement;
+-- MySQL does not allow USE to be executed through a prepared statement.
+-- Keep this literal in sync with @schema_name when changing the target.
+-- Alternatively, select the target database in the client before execution.
+USE school_management;
 
 CREATE TABLE IF NOT EXISTS users (
     id BIGINT NOT NULL AUTO_INCREMENT,
