@@ -22,20 +22,25 @@ USE school_management;
 
 CREATE TABLE IF NOT EXISTS schools (
     id BIGINT NOT NULL AUTO_INCREMENT,
+    school_code VARCHAR(255) NOT NULL,
     school_name VARCHAR(255) NOT NULL,
-    school_code VARCHAR(100) NOT NULL,
-    schema_name VARCHAR(255) NOT NULL,
-    address TEXT,
-    phone_number VARCHAR(255),
+    address VARCHAR(255),
+    phone VARCHAR(255),
     email VARCHAR(255),
+    website VARCHAR(255),
+    principal_name VARCHAR(255),
+    anouncement VARCHAR(255),
+    logo VARBINARY(255),
+    favicon VARBINARY(255),
+    banner VARBINARY(255),
+    keywords VARCHAR(255),
     is_active BOOLEAN,
     created_at DATETIME NOT NULL,
     updated_at DATETIME,
     created_by VARCHAR(255),
     updated_by VARCHAR(255) NOT NULL,
     PRIMARY KEY (id),
-    UNIQUE KEY uk_schools_school_code (school_code),
-    UNIQUE KEY uk_schools_schema_name (schema_name)
+    UNIQUE KEY uk_schools_school_code (school_code)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS users (
