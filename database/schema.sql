@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS schools (
     email VARCHAR(255),
     website VARCHAR(255),
     principal_name VARCHAR(255),
-    anouncement VARCHAR(255),
+    announcement VARCHAR(255),
     logo VARBINARY(255),
     favicon VARBINARY(255),
     banner VARBINARY(255),

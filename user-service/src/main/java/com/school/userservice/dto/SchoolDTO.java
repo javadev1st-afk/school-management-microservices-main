@@ -28,7 +28,7 @@ public class SchoolDTO {
 
     private String principalName;
 
-    private String anouncement;
+    private String announcement;
 
     private byte[] logo;
 

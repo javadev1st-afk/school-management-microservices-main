@@ -47,8 +47,8 @@ public class School {
     @Column (name = "principal_name")
     private String principalName;
 
-    @Column(name = "anouncement")
-    private String anouncement;
+    @Column(name = "announcement")
+    private String announcement;
 
     @Column(name = "logo")
     private byte[] logo;
