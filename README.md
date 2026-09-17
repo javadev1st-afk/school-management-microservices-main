@@ -611,14 +611,14 @@ Shared settings are stored in `common-library/src/main/resources/common.yml` wit
 ### Schema-per-school tenancy
 
 Every database-backed request must include the school schema/database name in
-the `X-School-Name` header:
+the `X-School-Code` header:
 
 ```http
-X-School-Name: school_a
+X-School-Code: school_a
 ```
 
 Swagger UI includes the configured `DB_DEFAULT_SCHEMA` value as the
-`X-School-Name` header for requests made with **Try it out**. Change the
+`X-School-Code` header for requests made with **Try it out**. Change the
 header value in the request editor when testing another school.
 
 The common library validates the name (`A-Z`, `a-z`, `0-9`, and `_` only) and
@@ -628,7 +628,7 @@ operations with `DB_DEFAULT_SCHEMA` (defaults to `school_management`).
 
 Each tenant schema must contain the same tables. In production, use
 `validate` or a migration tool rather than creating tables from application
-startup. Requests without a valid `X-School-Name` header receive HTTP 400.
+startup. Requests without a valid `X-School-Code` header receive HTTP 400.
 
 ```bash
 java -jar user-service/target/user-service-1.0.0.jar --spring.profiles.active=dev

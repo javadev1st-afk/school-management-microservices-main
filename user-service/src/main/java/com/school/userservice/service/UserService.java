@@ -2,6 +2,10 @@ package com.school.userservice.service;
 
 import com.school.userservice.dto.LoginRequestDTO;
 import com.school.userservice.dto.LoginResponseDTO;
+import com.school.userservice.dto.ProfileDTO;
+import com.school.userservice.dto.ProfileDTO.ProfileDTOBuilder;
+import com.school.userservice.dto.StudentDTO;
+import com.school.userservice.dto.TeacherDTO;
 import com.school.userservice.dto.UserRegistrationDTO;
 import com.school.userservice.entity.User;
 import com.school.userservice.entity.UserRole;
@@ -96,7 +100,8 @@ public class UserService extends BaseService {
 
         String schoolCode = getSchoolCodeFromRequestHeader();
 
-        log.info("Generating JWT token for user: {} with roles: {} and schoolCode: {}", user.getUsername(), roles, schoolCode);
+        log.info("Generating JWT token for user: {} with roles: {} and schoolCode: {}", user.getUsername(), roles,
+                schoolCode);
         claimMap.put("uid", String.valueOf(user.getId()));
         claimMap.put("schoolCode", schoolCode);
 
