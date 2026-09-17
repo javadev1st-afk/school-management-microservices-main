@@ -8,6 +8,7 @@ import com.school.userservice.entity.UserRole;
 import com.school.userservice.repository.UserRepository;
 import com.school.userservice.repository.UserRoleRepository;
 import com.school.common.exception.ResourceNotFoundException;
+import com.school.common.service.BaseService;
 import com.pawan.share.jwt.JwtUtil;
 import com.school.common.exception.DuplicateResourceException;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +16,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -23,7 +27,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @RequiredArgsConstructor
 @Transactional
-public class UserService {
+public class UserService extends BaseService {
     private final UserRepository userRepository;
     private final UserRoleRepository userRoleRepository;
     private final SchoolService schoolService;
@@ -64,7 +68,6 @@ public class UserService {
 
         return LoginResponseDTO.builder()
                 .username(user.getUsername())
-                .username(user.getUsername())
                 .isActive(true)
                 .build();
     }
@@ -89,7 +92,15 @@ public class UserService {
                 .map(UserRole::getRole)
                 .collect(Collectors.toList());
 
-        String token = jwtTokenProvider.generateToken(user.getUsername(), roles, user.getId());
+        Map<String, String> claimMap = new HashMap<>();
+
+        String schoolCode = getSchoolCodeFromRequestHeader();
+
+        log.info("Generating JWT token for user: {} with roles: {} and schoolCode: {}", user.getUsername(), roles, schoolCode);
+        claimMap.put("uid", String.valueOf(user.getId()));
+        claimMap.put("schoolCode", schoolCode);
+
+        String token = jwtTokenProvider.generateToken(user.getUsername(), roles, claimMap);
         log.info("User logged in successfully: {}", user.getId());
 
         return LoginResponseDTO.builder()

@@ -58,11 +58,11 @@ public class SchoolService {
         return schoolConverter.entityToDTO(school);
     }
 
-    public SchoolDTO updateSchoolAnnoucement(SchoolDTO schoolDTO) {
+    public SchoolDTO updateSchoolAnnouncement(SchoolDTO schoolDTO) {
         log.info("Updating school with code: {}", schoolDTO.getSchoolCode());
         School school = schoolRepository.findBySchoolCode(schoolDTO.getSchoolCode())
                 .orElseThrow(() -> new ResourceNotFoundException("School", "schoolCode", schoolDTO.getSchoolCode()));
-        school.setAnouncement(schoolDTO.getAnouncement());
+        school.setAnnouncement(schoolDTO.getAnnouncement());
 
         schoolRepository.save(school);
         log.info("Announcement updated successfully");
@@ -99,7 +99,7 @@ public class SchoolService {
         school.setEmail(schoolDTO.getEmail());
         school.setWebsite(schoolDTO.getWebsite());
         school.setPrincipalName(schoolDTO.getPrincipalName());
-        school.setAnouncement(schoolDTO.getAnouncement());
+        school.setAnnouncement(schoolDTO.getAnnouncement());
         school.setLogo(schoolDTO.getLogo());
         school.setFavicon(schoolDTO.getFavicon());
         school.setBanner(schoolDTO.getBanner());
