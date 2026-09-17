@@ -21,19 +21,24 @@ import java.util.stream.Collectors;
 
 @Service
 @Slf4j
-@RequiredArgsConstructor 
+@RequiredArgsConstructor
 @Transactional
-public class AuthService {
+public class UserService {
     private final UserRepository userRepository;
     private final UserRoleRepository userRoleRepository;
+    private final SchoolService schoolService;
     private final JwtUtil jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
 
-    public LoginResponseDTO register(UserRegistrationDTO registrationDTO) {
-
-        if (userRepository.existsByUsername(registrationDTO.getUsername())) {
-            throw new DuplicateResourceException("User", "username", registrationDTO.getUsername());
+    public LoginResponseDTO registerAdmin(UserRegistrationDTO registrationDTO, String token) {
+        if (!schoolService.validateToken(token)) {
+            throw new RuntimeException("Invalid token for admin registration");
         }
+        registrationDTO.setRole("ADMIN");
+        return register(registrationDTO);
+    }
+
+    public LoginResponseDTO register(UserRegistrationDTO registrationDTO) {
 
         if (userRepository.existsByUsername(registrationDTO.getUsername())) {
             throw new DuplicateResourceException("User", "username", registrationDTO.getUsername());
@@ -52,24 +57,14 @@ public class AuthService {
         // Assign role
         UserRole userRole = UserRole.builder()
                 .username(user.getUsername())
-                .role("ROLE_"+registrationDTO.getRole())
+                .role("ROLE_" + registrationDTO.getRole())
                 .build();
         userRoleRepository.save(userRole);
         log.info("Role {} assigned to user id: {}", registrationDTO.getRole(), user.getId());
 
-        // Generate token
-        List<String> roles = userRoleRepository.findByUsername(user.getUsername())
-                .stream()
-                .map(UserRole::getRole)
-                .collect(Collectors.toList());
-
-        String token = jwtTokenProvider.generateToken(user.getUsername(), roles, user.getId());
-
         return LoginResponseDTO.builder()
                 .username(user.getUsername())
                 .username(user.getUsername())
-                .token(token)
-                .roles(roles)
                 .isActive(true)
                 .build();
     }
@@ -105,15 +100,32 @@ public class AuthService {
                 .isActive(user.getIsActive())
                 .build();
     }
-  
+
     public void updateUserStatus(String userName, boolean isActive) {
         log.info("Attempting update user status for username: {}", userName);
 
         User user = userRepository.findByUsername(userName)
                 .orElseThrow(() -> new ResourceNotFoundException("User", "userName", userName));
-       if(!Objects.equals(isActive, user.getIsActive()) ) {
-    	   user.setIsActive(isActive);
-    	   userRepository.save(user);
-       }
+        if (!Objects.equals(isActive, user.getIsActive())) {
+            user.setIsActive(isActive);
+            userRepository.save(user);
+        }
+    }
+
+    public void createLoginUser(String userName, String password, String role) {
+        boolean isValidRole = Objects.equals(com.school.common.enums.UserRole.STUDENT.getValue(), role)
+                || Objects.equals(com.school.common.enums.UserRole.TEACHER.getValue(), role)
+                || Objects.equals(com.school.common.enums.UserRole.ADMIN.getValue(), role);
+        try {
+            UserRegistrationDTO userRegistrationDTO = UserRegistrationDTO.builder()
+                    .username(userName)
+                    .password(password)
+                    .phoneNumber("0000000000")
+                    .role(isValidRole ? role : com.school.common.enums.UserRole.STUDENT.getValue())
+                    .build();
+            register(userRegistrationDTO);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to create login user: " + e.getMessage());
+        }
     }
 }

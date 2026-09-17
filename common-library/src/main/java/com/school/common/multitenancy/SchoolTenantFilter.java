@@ -22,7 +22,9 @@ public class SchoolTenantFilter extends OncePerRequestFilter {
             HttpServletRequest request,
             HttpServletResponse response,
             FilterChain filterChain) throws ServletException, IOException {
-        if ("OPTIONS".equalsIgnoreCase(request.getMethod()) || request.getRequestURI().contains("v3/api-docs") || request.getRequestURI().contains("swagger")) {
+            //for all these requests we don't need to check for the tenant header and the default schema will be used that is school_management 
+        if ("OPTIONS".equalsIgnoreCase(request.getMethod()) || request.getRequestURI().contains("v3/api-docs")
+                || request.getRequestURI().contains("swagger") || request.getRequestURI().contains("/schools/public/")) {
             filterChain.doFilter(request, response);
             return;
         }

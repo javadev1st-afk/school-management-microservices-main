@@ -14,9 +14,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.school.common.enums.UserRole;
 import com.school.common.exception.DuplicateResourceException;
 import com.school.common.exception.ResourceNotFoundException;
 import com.school.userservice.Constants;
+import com.school.userservice.Utills;
 import com.school.userservice.converter.TeacherConverter;
 import com.school.userservice.dto.TeacherDTO;
 import com.school.userservice.entity.Teacher;
@@ -32,6 +34,7 @@ import lombok.extern.slf4j.Slf4j;
 public class TeacherService {
     private final TeacherRepository teacherRepository;
     private final TeacherConverter teacherConverter;
+    private final UserService userService;
 
     public TeacherDTO createTeacher(TeacherDTO teacherDTO) {
         log.info("Creating teacher with employee id: {}", teacherDTO.getEmployeeId());
@@ -146,6 +149,8 @@ public class TeacherService {
                         .address(address)
                         .phone(phone)
                         .build());
+
+                        userService.createLoginUser(userName, Utills.generatePasswordFromDateOfBirth(joiningDate != null && !joiningDate.isBlank() ? LocalDate.parse(joiningDate) : LocalDate.of(2000, 01, 01)), UserRole.TEACHER.getValue());
             }
 
             teacherRepository.saveAll(teachersToSave);

@@ -9,6 +9,7 @@ import com.school.userservice.Constants;
 import com.school.userservice.Utills;
 import com.school.userservice.converter.StudentConverter;
 import com.school.common.exception.ResourceNotFoundException;
+import com.school.common.enums.UserRole;
 import com.school.common.exception.DuplicateResourceException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +29,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -37,7 +39,7 @@ import java.util.stream.Collectors;
 public class StudentService {
     private final StudentRepository studentRepository;
     private final StudentConverter studentConverter;
-    private final AuthService authService;
+    private final UserService userService;
 
     public StudentDTO createStudent(StudentDTO studentDTO) {
         log.info("Creating student with roll number: {}", studentDTO.getRollNumber());
@@ -162,7 +164,7 @@ public class StudentService {
                 LocalDate dateOfBirthValue = Utills.getDateFromString(dateOfBirth);
 
                 if(createLogin) {
-                    createLoginUser(String.valueOf(admissionNumber), Utills.generatePasswordFromDateOfBirth(dateOfBirthValue));
+                    userService.createLoginUser(String.valueOf(admissionNumber), Utills.generatePasswordFromDateOfBirth(dateOfBirthValue), UserRole.STUDENT.getValue());
                 }
 
                 if(id > 0) {
@@ -270,18 +272,4 @@ public class StudentService {
 		s = (s == null) ? "" : s;
 		return s;
 	}
-
-    private void createLoginUser(String userName, String password) {
-        try {
-            UserRegistrationDTO userRegistrationDTO = UserRegistrationDTO.builder()
-            .username(userName)
-            .password(password)
-            .phoneNumber("0000000000") // Default phone number, can be updated later
-            .role("STUDENT")
-            .build();
-            authService.register(userRegistrationDTO);
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to create login user: " + e.getMessage());
-        }
-    }
 }
