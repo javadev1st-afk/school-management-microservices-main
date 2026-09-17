@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS schools (
     created_at DATETIME NOT NULL,
     updated_at DATETIME,
     created_by VARCHAR(255),
-    updated_by VARCHAR(255) NOT NULL,
+    updated_by VARCHAR(255),
     PRIMARY KEY (id),
     UNIQUE KEY uk_schools_school_code (school_code)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

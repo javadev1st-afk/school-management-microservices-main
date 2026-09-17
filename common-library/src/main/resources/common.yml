@@ -33,9 +33,11 @@ app:
   open-endpoints:
     - /ui/**
     - /user-service/api/v1/auth/login/**
-    - /user-service/api/v1/auth/register/**
+    - /user-service/api/v1/users/register/admin/**
+    - /user-service/api/v1/schools/public/**
     - /user-service/api/test/**
-    - /api/v1/auth/register/**
+    - /api/v1/users/register/admin/**
+    - /api/v1/schools/public/**
     - /api/v1/auth/login/**
     - /api/test/**
     - /internal/**
