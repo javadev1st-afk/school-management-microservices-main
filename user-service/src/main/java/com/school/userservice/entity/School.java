@@ -32,25 +32,34 @@ public class School {
     @Column(name = "school_name", nullable = false)
     private String schoolName;
 
+    @Column(name = "address")
     private String address;
 
+    @Column(name = "phone")
     private String phone;
 
+    @Column(name = "email")
     private String email;
 
+    @Column(name = "website")
     private String website;
 
     @Column (name = "principal_name")
     private String principalName;
 
+    @Column(name = "anouncement")
     private String anouncement;
 
+    @Column(name = "logo")
     private byte[] logo;
 
+    @Column(name = "favicon")
     private byte[] favicon;
 
+    @Column(name = "banner")
     private byte[] banner;
 
+    @Column(name = "keywords")
     private String keywords;
 
 
