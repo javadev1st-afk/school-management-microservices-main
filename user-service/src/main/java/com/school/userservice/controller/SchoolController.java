@@ -72,7 +72,7 @@ public class SchoolController {
     @Operation(summary = "Update school announcement")
     public ResponseEntity<ApiResponse<SchoolDTO>> updateAnnouncement(@Valid @RequestBody SchoolDTO schoolDTO) {
         log.info("Update school announcement request received for school name: {}", schoolDTO.getSchoolName());
-        SchoolDTO response = schoolService.updateSchoolAnnoucement(schoolDTO);
+        SchoolDTO response = schoolService.updateSchoolAnnouncement(schoolDTO);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(ApiResponse.success(response, "School announcement updated successfully"));
     }
