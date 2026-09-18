@@ -37,7 +37,7 @@ public class HomeworkService {
     @Value("${app.homework.storage.path:./deployment/homework}")
     private String storageBasePath;
 
-    @Value("${app.homework.download.base-url:http://localhost:8000/academic-service}")
+    @Value("${app.homework.download.base-url:/rest/academic-service}")
     private String downloadBaseUrl;
 
     public HomeworkDTO createHomework(HomeworkDTO homeworkDTO) {
