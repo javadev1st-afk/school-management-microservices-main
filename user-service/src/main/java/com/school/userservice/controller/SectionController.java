@@ -47,7 +47,6 @@ public class SectionController {
 	}
 
 	@GetMapping("/class/{classId}")
-	@PreAuthorize("hasAnyRole('ADMIN', 'TEACHER', 'STUDENT')")
 	@Operation(summary = "Get all sections by class ID")
 	public ResponseEntity<ApiResponse<List<SectionDTO>>> getSectionsByClassId(@PathVariable Long classId) {
 		log.info("Get sections request received for class id: {}", classId);
@@ -56,7 +55,6 @@ public class SectionController {
 	}
 
 	@GetMapping("/class/{classId}/active")
-	@PreAuthorize("hasAnyRole('ADMIN', 'TEACHER', 'STUDENT')")
 	@Operation(summary = "Get all active sections by class ID")
 	public ResponseEntity<ApiResponse<List<SectionDTO>>> getActiveSectionsByClassId(@PathVariable Long classId) {
 		log.info("Get active sections request received for class id: {}", classId);
@@ -84,7 +82,6 @@ public class SectionController {
 	}
 
 	@GetMapping("/seat/matrix")
-	@PreAuthorize("hasRole('ADMIN')")
 	@Operation(summary = "Get all sections seat matrix")
 	public ResponseEntity<ApiResponse<List<SeatMatrixDTO>>> getAllSectionsSeats() {
 		log.info("Get all sections seat matrix request received");
@@ -93,7 +90,6 @@ public class SectionController {
 	}
 
 	@GetMapping
-	@PreAuthorize("hasRole('ADMIN')")
 	@Operation(summary = "Get all sections")
 	public ResponseEntity<ApiResponse<List<SectionDTO>>> getAllSections() {
 		log.info("Get all sections request received");

@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.*;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -41,16 +42,25 @@ public class LeaveApplicationController {
 	public ApiResponse<List<LeaveApplicationDTO>> byStudentAndDate(@PathVariable Long admissionNumber, @PathVariable LocalDate date) {
 		return ApiResponse.success(service.byAdmissionNumberAndDate(admissionNumber, date));
 	}
-
+	
+	@GetMapping("/year/all")
+	@PreAuthorize("hasAnyRole('ADMIN', 'TEACHER')")
+	public ApiResponse<List<LeaveApplicationDTO>> allCurrentYear() {
+		return ApiResponse.success(service.getCurrentYearLeave());
+	}
+	
+	
 	@GetMapping
-	public ApiResponse<List<LeaveApplicationDTO>> byStatus(@RequestParam(defaultValue = "PENDING") LeaveStatus status) {
+	@PreAuthorize("hasAnyRole('ADMIN', 'TEACHER')")
+	public ApiResponse<List<LeaveApplicationDTO>> allRecent(@RequestParam(defaultValue = "PENDING") LeaveStatus status) {
 		return ApiResponse.success(service.byStatus(status));
 	}
+	
 
-	@PatchMapping("/{id}/decision")
-	public ApiResponse<LeaveApplicationDTO> decide(@PathVariable Long id, @RequestParam LeaveStatus status,
-		 @RequestParam(required = false) String remarks) {
-		return ApiResponse.success(service.decide(id, status, remarks),
+	@PostMapping("/{id}/decision/{status}")
+	@PreAuthorize("hasAnyRole('ADMIN', 'TEACHER')")
+	public ApiResponse<LeaveApplicationDTO> decide(@PathVariable Long id, @PathVariable LeaveStatus status) {
+		return ApiResponse.success(service.decide(id, status, ""),
 				"Leave application updated successfully");
 	}
 }
