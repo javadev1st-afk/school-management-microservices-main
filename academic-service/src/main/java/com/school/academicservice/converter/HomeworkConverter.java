@@ -1,6 +1,7 @@
 package com.school.academicservice.converter;
 
 import com.school.academicservice.dto.HomeworkDTO;
+import com.school.academicservice.dto.HomeworkFileDTO;
 import com.school.academicservice.entity.Homework;
 import org.springframework.stereotype.Component;
 
@@ -22,6 +23,15 @@ public class HomeworkConverter {
                 .fileUrl(homework.getFileUrl())
                 .dueDate(homework.getDueDate())
                 .workType(homework.getWorkType())
+                .files(homework.getFiles().stream()
+                        .map(file -> HomeworkFileDTO.builder()
+                                .id(file.getId())
+                                .fileName(file.getFileName())
+                                .contentType(file.getContentType())
+                                .fileSize(file.getFileSize())
+                                .fileData(file.getFileData())
+                                .build())
+                        .toList())
                 .build();
     }
 
