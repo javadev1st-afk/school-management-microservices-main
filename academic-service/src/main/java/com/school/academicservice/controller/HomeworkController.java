@@ -1,6 +1,7 @@
 package com.school.academicservice.controller;
 
 import com.school.academicservice.dto.HomeworkDTO;
+import com.school.academicservice.dto.HomeworkFileDTO;
 import com.school.academicservice.service.HomeworkService;
 import com.school.common.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -10,12 +11,17 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
 import java.time.LocalDate;
 import java.util.List;
+import java.io.IOException;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/v1/homework")
@@ -32,6 +38,17 @@ public class HomeworkController {
     public ResponseEntity<ApiResponse<HomeworkDTO>> createHomework(@Valid @RequestBody HomeworkDTO homeworkDTO) {
         log.info("Create homework request received for class: {}", homeworkDTO.getClassId());
         HomeworkDTO response = homeworkService.createHomework(homeworkDTO);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(ApiResponse.success(response, "Homework assigned successfully"));
+    }
+
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PreAuthorize("hasRole('TEACHER')")
+    @Operation(summary = "Assign new homework with files")
+    public ResponseEntity<ApiResponse<HomeworkDTO>> createHomeworkWithFiles(
+            @Valid @RequestPart("homework") HomeworkDTO homeworkDTO,
+            @RequestPart(value = "files", required = false) List<MultipartFile> files) throws IOException {
+        HomeworkDTO response = homeworkService.createHomework(homeworkDTO, files);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(ApiResponse.success(response, "Homework assigned successfully"));
     }
@@ -85,6 +102,36 @@ public class HomeworkController {
         log.info("Update homework request received for id: {}", id);
         HomeworkDTO response = homeworkService.updateHomework(id, homeworkDTO);
         return ResponseEntity.ok(ApiResponse.success(response, "Homework updated successfully"));
+    }
+
+    @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PreAuthorize("hasRole('TEACHER')")
+    @Operation(summary = "Update homework with files")
+    public ResponseEntity<ApiResponse<HomeworkDTO>> updateHomeworkWithFiles(
+            @PathVariable Long id,
+            @Valid @RequestPart("homework") HomeworkDTO homeworkDTO,
+            @RequestPart(value = "files", required = false) List<MultipartFile> files) throws IOException {
+        HomeworkDTO response = homeworkService.updateHomework(id, homeworkDTO, files);
+        return ResponseEntity.ok(ApiResponse.success(response, "Homework updated successfully"));
+    }
+
+    @GetMapping("/files/{fileId}/download")
+    @PreAuthorize("hasAnyRole('ADMIN', 'TEACHER', 'STUDENT')")
+    @Operation(summary = "Download a homework file")
+    public ResponseEntity<ByteArrayResource> downloadHomeworkFile(@PathVariable Long fileId) {
+        HomeworkFileDTO file = homeworkService.getFile(fileId);
+        MediaType contentType = file.getContentType() == null
+                ? MediaType.APPLICATION_OCTET_STREAM
+                : MediaType.parseMediaType(file.getContentType());
+        return ResponseEntity.ok()
+                .contentType(contentType)
+                .contentLength(file.getFileSize())
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + safeFileName(file.getFileName()) + "\"")
+                .body(new ByteArrayResource(file.getFileData()));
+    }
+
+    private String safeFileName(String fileName) {
+        return fileName.replace("\"", "").replace("\r", "").replace("\n", "");
     }
 
     @DeleteMapping("/{id}")

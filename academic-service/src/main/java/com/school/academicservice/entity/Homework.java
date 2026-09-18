@@ -13,6 +13,8 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.school.common.enums.ClassWork;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "homework")
@@ -60,4 +62,8 @@ public class Homework {
 
     @Enumerated(EnumType.STRING)
     private ClassWork workType;
+
+    @OneToMany(mappedBy = "homework", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    private List<HomeworkFile> files = new ArrayList<>();
 }

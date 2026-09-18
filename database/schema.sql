@@ -196,6 +196,19 @@ CREATE TABLE IF NOT EXISTS homework (
     PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+CREATE TABLE IF NOT EXISTS homework_file (
+    id BIGINT NOT NULL AUTO_INCREMENT,
+    homework_id BIGINT NOT NULL,
+    file_name VARCHAR(255) NOT NULL,
+    content_type VARCHAR(255),
+    file_size BIGINT NOT NULL,
+    file_data LONGBLOB NOT NULL,
+    PRIMARY KEY (id),
+    CONSTRAINT fk_homework_file_homework
+        FOREIGN KEY (homework_id) REFERENCES homework (id)
+        ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 CREATE TABLE IF NOT EXISTS results (
     id BIGINT NOT NULL AUTO_INCREMENT,
     admission_number BIGINT NOT NULL,

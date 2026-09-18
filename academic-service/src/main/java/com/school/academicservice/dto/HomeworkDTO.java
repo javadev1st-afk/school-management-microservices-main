@@ -9,6 +9,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.util.List;
 
 import com.school.common.enums.ClassWork;
 
@@ -40,4 +41,5 @@ public class HomeworkDTO {
     @NotNull(message = "Due date is required")
     private LocalDate dueDate;
     private ClassWork workType;
+    private List<HomeworkFileDTO> files;
 }
