@@ -41,24 +41,24 @@ public class SchoolTenantFilter extends OncePerRequestFilter {
             return;
         }
         
-        String schoolName = request.getHeader(TenantContext.HEADER_NAME);
+        String schoolCode = request.getHeader(TenantContext.HEADER_NAME);
         
         String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
         
 		if (authHeader != null && authHeader.startsWith("Bearer ")) {
             String token = authHeader.substring(7);
-			schoolName = schoolNameFromJwtToken(token);
+			schoolCode = schoolCodeFromJwtToken(token);
 		}
        
-        if (schoolName == null || schoolName.isBlank()
-                || !VALID_SCHEMA_NAME.matcher(schoolName).matches()) {
+        if (schoolCode == null || schoolCode.isBlank()
+                || !VALID_SCHEMA_NAME.matcher(schoolCode).matches()) {
             response.sendError(
                     HttpStatus.BAD_REQUEST.value(),
-                    "A valid X-School-Name header is required");
+                    "A valid X-School-Code header is required");
             return;
         }
 
-        TenantContext.setTenant(schoolName);
+        TenantContext.setTenant(schoolCode);
         try {
             filterChain.doFilter(request, response);
         } finally {
@@ -66,7 +66,7 @@ public class SchoolTenantFilter extends OncePerRequestFilter {
         }
     }
     
-    private String schoolNameFromJwtToken(String token) {
+    private String schoolCodeFromJwtToken(String token) {
 
 		Claims claims = JwtCache.get(token);
 		System.out.println("Claims available in cache : " + (claims != null));

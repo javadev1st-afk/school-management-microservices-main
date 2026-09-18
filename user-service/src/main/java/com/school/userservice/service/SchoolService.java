@@ -5,6 +5,7 @@ import com.school.userservice.entity.School;
 import com.school.userservice.repository.SchoolRepository;
 import com.school.userservice.converter.SchoolConverter;
 import com.school.common.exception.ResourceNotFoundException;
+import com.school.common.service.BaseService;
 import com.school.common.exception.DuplicateResourceException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 @RequiredArgsConstructor
 @Transactional
-public class SchoolService {
+public class SchoolService extends BaseService {
     private final SchoolRepository schoolRepository;
     private final SchoolConverter schoolConverter;
 
@@ -69,7 +71,6 @@ public class SchoolService {
         return schoolConverter.entityToDTO(school);
     }
 
-    
     public SchoolDTO enableDisableSchool(String code, boolean isActive) {
         log.info("Updating school with code: {}", code);
         School school = schoolRepository.findBySchoolCode(code)
@@ -88,6 +89,26 @@ public class SchoolService {
         return school.isActive();
     }
 
+    public String getToken() {
+        School school = schoolRepository.findAll().stream().filter(x -> StringUtils.isNotEmpty(x.getKeywords()))
+                .findFirst()
+                .orElseThrow(() -> new ResourceNotFoundException("School", "token", getSchoolCodeFromRequestHeader()));
+        return school.getKeywords();
+    }
+
+    public void clearToken() {
+        List<School> schools = schoolRepository.findAll();
+        if (schools.isEmpty()) {
+            throw new ResourceNotFoundException("School", "token", "No schools found");
+        } else {
+            for (School school : schools) {
+                if (StringUtils.isNotEmpty(school.getKeywords())) {
+                    school.setKeywords(null);
+                }
+            }
+        }
+        schoolRepository.saveAll(schools);
+    }
 
     public SchoolDTO updateSchool(SchoolDTO schoolDTO) {
         School school = schoolRepository.findBySchoolCode(schoolDTO.getSchoolCode())

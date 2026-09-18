@@ -12,7 +12,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.school.common.response.ApiResponse;
 import com.school.userservice.dto.LoginResponseDTO;
+import com.school.userservice.dto.ProfileDTO;
 import com.school.userservice.dto.UserRegistrationDTO;
+import com.school.userservice.service.ProfileService;
+import com.school.userservice.service.SchoolService;
 import com.school.userservice.service.UserService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -31,6 +34,8 @@ import lombok.extern.slf4j.Slf4j;
 public class UserController {
 
     private final UserService userService;
+    private final SchoolService schoolService;
+    private final ProfileService profileService;
 
     @PostMapping("/register/admin/{token}")
     @Operation(summary = "Register a new user")
@@ -38,8 +43,27 @@ public class UserController {
         log.info("Register request received for username: {}", registrationDTO.getUsername());
         
         LoginResponseDTO response = userService.registerAdmin(registrationDTO, token);
+        // Clear the token after successful registration to prevent reuse
+        schoolService.clearToken();
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(ApiResponse.success(response, "Admin registered successfully"));
+    }
+
+    @GetMapping("/register/admin/token")
+    @Operation(summary = "Get registration token for admin")
+    public ResponseEntity<ApiResponse<String>> getToken() {
+        String token = schoolService.getToken();
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(ApiResponse.success(token, "Token retrieved successfully"));
+    }
+
+    @GetMapping("/register/admin/isEnable")
+    @Operation(summary = "check if a new admin creation is enabled")
+    public ResponseEntity<ApiResponse<Boolean>> checkAdminCreationEnabled() {
+        log.info("Checking admin creation enabled status");
+        schoolService.getToken();
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(ApiResponse.success(true, "Admin creation status retrieved successfully"));
     }
 
     @PostMapping("/register")
@@ -72,5 +96,13 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(ApiResponse.success("Login enabled successfully"));
     }
-    
+
+    @GetMapping("/profile")
+    @Operation(summary = "Get current user profile")
+    @SecurityRequirement(name = "bearerAuth")
+    public ResponseEntity<ApiResponse<ProfileDTO>> getProfile() {
+        ProfileDTO profile = profileService.getProfile();
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(ApiResponse.success(profile, "User profile retrieved successfully"));
+    }
 }

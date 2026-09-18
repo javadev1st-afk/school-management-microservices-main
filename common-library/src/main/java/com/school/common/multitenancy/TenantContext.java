@@ -2,7 +2,7 @@ package com.school.common.multitenancy;
 
 public final class TenantContext {
 
-    public static final String HEADER_NAME = "X-School-Name";
+    public static final String HEADER_NAME = "X-School-Code";
 
     private static final ThreadLocal<String> CURRENT_TENANT = new ThreadLocal<>();
 

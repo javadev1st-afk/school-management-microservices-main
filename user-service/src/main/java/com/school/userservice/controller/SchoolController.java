@@ -39,7 +39,7 @@ public class SchoolController {
                 .body(ApiResponse.success(response, "Schools retrieved successfully"));
     }
 
-    @GetMapping("/public/{schoolCode}")
+    @GetMapping("/public/code/{schoolCode}")
     @Operation(summary = "Get school by code")
     public ResponseEntity<ApiResponse<SchoolDTO>> getSchoolByCode(@PathVariable String schoolCode) {
         SchoolDTO response = schoolService.getSchoolByCode(schoolCode);

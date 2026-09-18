@@ -37,12 +37,25 @@ public class LeaveApplicationService {
 
 	@Transactional(readOnly = true)
 	public List<LeaveApplicationDTO> byStudentAdmissionNumber(Long admissionNumber) {
-		return repository.findByAdmissionNumberOrderByCreatedAtDesc(admissionNumber).stream().map(converter::toDto).toList();
+		return repository.findByAdmissionNumberOrderByCreatedAtDesc(admissionNumber).stream()
+				.filter(x -> x.getToDate().isAfter(LocalDate.now().withDayOfYear(1)))
+				.map(converter::toDto)
+				.toList();
 	}
 
 	@Transactional(readOnly = true)
 	public List<LeaveApplicationDTO> byAdmissionNumberAndDate(Long admissionNumber, LocalDate date) {
-		return repository.findByFromDateLessThanEqualAndToDateGreaterThanEqual(admissionNumber, date, date).stream().map(converter::toDto).toList();
+		return repository.findByFromDateLessThanEqualAndToDateGreaterThanEqual(admissionNumber, date, date).stream()
+				.filter(x -> x.getToDate().isAfter(LocalDate.now().withDayOfYear(1)))
+				.map(converter::toDto).toList();
+	}
+
+	@Transactional(readOnly = true)
+	public List<LeaveApplicationDTO> getCurrentYearLeave() {
+		LocalDate firstDayOfCurrentYear = LocalDate.now().withDayOfYear(1);
+		return repository.findByFromDateGreaterThanEqual(firstDayOfCurrentYear).stream()
+				.filter(x -> x.getToDate().isAfter(LocalDate.now().withDayOfYear(1)))
+				.map(converter::toDto).toList();
 	}
 
 	@Transactional(readOnly = true)
@@ -68,7 +81,7 @@ public class LeaveApplicationService {
 		return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Leave application", "id", id));
 	}
 
-	private String getLoginUserName(){
-		 return SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+	private String getLoginUserName() {
+		return SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
 	}
 }

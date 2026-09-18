@@ -13,5 +13,8 @@ public interface LeaveApplicationRepository extends JpaRepository<LeaveApplicati
 	List<LeaveApplication> findByStatusOrderByCreatedAtAsc(LeaveStatus status);
 
 	List<LeaveApplication> findByStatusAndApprovedByOrderByCreatedAtAsc(LeaveStatus status, Long approvedBy);
+	
+	List<LeaveApplication> findByFromDateGreaterThanEqual(LocalDate date);
+	
 	List<LeaveApplication> findByFromDateLessThanEqualAndToDateGreaterThanEqual(Long admissionNumber, LocalDate fromDate, LocalDate toDate);
 }
