@@ -14,5 +14,6 @@ public class HomeworkFileDTO {
     private String fileName;
     private String contentType;
     private long fileSize;
-    private byte[] fileData;
+    private String filePath;
+    private String downloadUrl;
 }

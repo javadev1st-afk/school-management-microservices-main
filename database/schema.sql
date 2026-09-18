@@ -202,7 +202,8 @@ CREATE TABLE IF NOT EXISTS homework_file (
     file_name VARCHAR(255) NOT NULL,
     content_type VARCHAR(255),
     file_size BIGINT NOT NULL,
-    file_data LONGBLOB NOT NULL,
+    file_path VARCHAR(1000) NOT NULL,
+    download_url VARCHAR(1000),
     PRIMARY KEY (id),
     CONSTRAINT fk_homework_file_homework
         FOREIGN KEY (homework_id) REFERENCES homework (id)

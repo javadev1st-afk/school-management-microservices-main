@@ -29,7 +29,8 @@ public class HomeworkConverter {
                                 .fileName(file.getFileName())
                                 .contentType(file.getContentType())
                                 .fileSize(file.getFileSize())
-                                .fileData(file.getFileData())
+                                .filePath(file.getFilePath())
+                                .downloadUrl(file.getDownloadUrl())
                                 .build())
                         .toList())
                 .build();
