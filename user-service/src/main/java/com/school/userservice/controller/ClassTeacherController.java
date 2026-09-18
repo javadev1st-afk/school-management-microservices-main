@@ -62,7 +62,7 @@ public class ClassTeacherController {
 	}
 
 	@GetMapping
-	@PreAuthorize("hasRole('ADMIN')")
+	@PreAuthorize("hasAnyRole('ADMIN', 'TEACHER')")
 	@Operation(summary = "Get all class teachers")
 	public ResponseEntity<ApiResponse<List<ClassTeacherDTO>>> getAllClassTeachers() {
 		log.info("Get all class teachers request received");
