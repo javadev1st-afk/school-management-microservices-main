@@ -1,21 +1,27 @@
 package com.school.academicservice.service;
 
 import com.school.academicservice.dto.HomeworkDTO;
+import com.school.academicservice.dto.HomeworkFileDTO;
 import com.school.academicservice.entity.Homework;
 import com.school.academicservice.entity.HomeworkFile;
-import com.school.academicservice.dto.HomeworkFileDTO;
-import com.school.academicservice.repository.HomeworkRepository;
 import com.school.academicservice.repository.HomeworkFileRepository;
-import com.school.academicservice.converter.HomeworkConverter;
+import com.school.academicservice.repository.HomeworkRepository;
 import com.school.common.exception.ResourceNotFoundException;
+import com.school.common.multitenancy.TenantContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,9 +33,15 @@ public class HomeworkService {
     private final HomeworkConverter homeworkConverter;
     private final HomeworkFileRepository homeworkFileRepository;
 
+    @Value("${app.homework.storage.path:./deployment/homework}")
+    private String storageBasePath;
+
+    @Value("${app.base-url:http://localhost:8000}")
+    private String appBaseUrl;
+
     public HomeworkDTO createHomework(HomeworkDTO homeworkDTO) {
         log.info("Creating homework: {} for class: {} section: {}", homeworkDTO.getTitle(), homeworkDTO.getClassId(), homeworkDTO.getSectionName());
-        
+
         Homework homework = homeworkConverter.dtoToEntity(homeworkDTO);
         homework = homeworkRepository.save(homework);
         log.info("Homework created successfully with id: {}", homework.getId());
@@ -39,7 +51,9 @@ public class HomeworkService {
     public HomeworkDTO createHomework(HomeworkDTO homeworkDTO, List<MultipartFile> files) throws IOException {
         Homework homework = homeworkConverter.dtoToEntity(homeworkDTO);
         addFiles(homework, files);
-        return homeworkConverter.entityToDTO(homeworkRepository.save(homework));
+        Homework savedHomework = homeworkRepository.save(homework);
+        refreshDownloadUrls(savedHomework);
+        return homeworkConverter.entityToDTO(savedHomework);
     }
 
     public HomeworkDTO getHomeworkById(Long id) {
@@ -99,7 +113,9 @@ public class HomeworkService {
             homework.getFiles().clear();
             addFiles(homework, files);
         }
-        return homeworkConverter.entityToDTO(homeworkRepository.save(homework));
+        Homework savedHomework = homeworkRepository.save(homework);
+        refreshDownloadUrls(savedHomework);
+        return homeworkConverter.entityToDTO(savedHomework);
     }
 
     @Transactional(readOnly = true)
@@ -111,7 +127,8 @@ public class HomeworkService {
                 .fileName(file.getFileName())
                 .contentType(file.getContentType())
                 .fileSize(file.getFileSize())
-                .fileData(file.getFileData())
+                .filePath(file.getFilePath())
+                .downloadUrl(file.getDownloadUrl())
                 .build();
     }
 
@@ -119,25 +136,69 @@ public class HomeworkService {
         if (files == null) {
             return;
         }
+
+        String schoolCode = Optional.ofNullable(TenantContext.getTenant())
+                .filter(code -> !code.isBlank())
+                .orElse("default");
+        Path schoolStoragePath = Path.of(storageBasePath, sanitizeSchoolCode(schoolCode));
+        Files.createDirectories(schoolStoragePath);
+
         for (MultipartFile file : files) {
             if (file == null || file.isEmpty()) {
                 throw new IllegalArgumentException("Uploaded files must not be empty");
             }
+
+            String originalFileName = file.getOriginalFilename() == null ? "file" : file.getOriginalFilename();
+            String sanitizedFileName = sanitizeFileName(originalFileName);
+            String uniqueFileName = UUID.randomUUID() + "_" + sanitizedFileName;
+            Path targetPath = schoolStoragePath.resolve(uniqueFileName);
+            Files.write(targetPath, file.getBytes());
+
             homework.getFiles().add(HomeworkFile.builder()
                     .homework(homework)
-                    .fileName(file.getOriginalFilename() == null ? "file" : file.getOriginalFilename())
+                    .fileName(originalFileName)
                     .contentType(file.getContentType())
                     .fileSize(file.getSize())
-                    .fileData(file.getBytes())
+                    .filePath(targetPath.toString())
+                    .downloadUrl(null)
                     .build());
         }
     }
 
+    private void refreshDownloadUrls(Homework homework) {
+        if (homework == null || homework.getFiles() == null || homework.getFiles().isEmpty()) {
+            return;
+        }
+        for (HomeworkFile file : homework.getFiles()) {
+            if (file.getId() != null) {
+                file.setDownloadUrl(appBaseUrl + "/api/v1/homework/files/" + file.getId() + "/download");
+            }
+        }
+    }
+
+    private String sanitizeSchoolCode(String schoolCode) {
+        return schoolCode.replaceAll("[^A-Za-z0-9_-]", "_");
+    }
+
+    private String sanitizeFileName(String fileName) {
+        return fileName.replaceAll("[^a-zA-Z0-9._-]", "_");
+    }
+
     public void deleteHomework(Long id) {
         log.info("Deleting homework with id: {}", id);
-        if (!homeworkRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Homework", "id", id);
+        Homework homework = homeworkRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Homework", "id", id));
+
+        for (HomeworkFile file : homework.getFiles()) {
+            if (file.getFilePath() != null) {
+                try {
+                    Files.deleteIfExists(Path.of(file.getFilePath()));
+                } catch (IOException e) {
+                    log.warn("Failed to delete homework file at path {} for homework id {}", file.getFilePath(), id, e);
+                }
+            }
         }
+
         homeworkRepository.deleteById(id);
         log.info("Homework deleted successfully with id: {}", id);
     }

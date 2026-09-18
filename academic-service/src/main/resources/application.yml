@@ -6,3 +6,9 @@ spring:
     import: optional:classpath:/common-dev.yml,optional:classpath:/common-uat.yml,optional:classpath:/common-prod.yml,classpath:/common.yml
   application:
     name: academic-service
+
+app:
+  homework:
+    storage:
+      path: ${HOMEWORK_STORAGE_PATH:./deployment/homework}
+  base-url: ${APP_BASE_URL:http://localhost:8000}

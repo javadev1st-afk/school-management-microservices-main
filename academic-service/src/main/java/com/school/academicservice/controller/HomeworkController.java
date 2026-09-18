@@ -7,21 +7,26 @@ import com.school.common.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseEntity;
-import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import jakarta.validation.Valid;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.List;
-import java.io.IOException;
-import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/v1/homework")
@@ -118,16 +123,21 @@ public class HomeworkController {
     @GetMapping("/files/{fileId}/download")
     @PreAuthorize("hasAnyRole('ADMIN', 'TEACHER', 'STUDENT')")
     @Operation(summary = "Download a homework file")
-    public ResponseEntity<ByteArrayResource> downloadHomeworkFile(@PathVariable Long fileId) {
+    public ResponseEntity<Resource> downloadHomeworkFile(@PathVariable Long fileId) throws IOException {
         HomeworkFileDTO file = homeworkService.getFile(fileId);
+        Path filePath = Path.of(file.getFilePath());
         MediaType contentType = file.getContentType() == null
                 ? MediaType.APPLICATION_OCTET_STREAM
                 : MediaType.parseMediaType(file.getContentType());
-        return ResponseEntity.ok()
-                .contentType(contentType)
-                .contentLength(file.getFileSize())
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + safeFileName(file.getFileName()) + "\"")
-                .body(new ByteArrayResource(file.getFileData()));
+
+        try (InputStream inputStream = Files.newInputStream(filePath)) {
+            InputStreamResource resource = new InputStreamResource(inputStream);
+            return ResponseEntity.ok()
+                    .contentType(contentType)
+                    .contentLength(Files.size(filePath))
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + safeFileName(file.getFileName()) + "\"")
+                    .body(resource);
+        }
     }
 
     private String safeFileName(String fileName) {

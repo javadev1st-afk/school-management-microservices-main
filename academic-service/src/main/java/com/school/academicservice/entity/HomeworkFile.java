@@ -32,8 +32,9 @@ public class HomeworkFile {
     @Column(name = "file_size", nullable = false)
     private long fileSize;
 
-    @Lob
-    @Basic(fetch = FetchType.LAZY)
-    @Column(name = "file_data", nullable = false, columnDefinition = "LONGBLOB")
-    private byte[] fileData;
+    @Column(name = "file_path", nullable = false)
+    private String filePath;
+
+    @Column(name = "download_url")
+    private String downloadUrl;
 }
