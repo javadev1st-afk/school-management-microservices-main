@@ -11,4 +11,6 @@ app:
   homework:
     storage:
       path: ${HOMEWORK_STORAGE_PATH:./deployment/homework}
-  base-url: ${APP_BASE_URL:http://localhost:8000}
+    download:
+      base-url: ${HOMEWORK_DOWNLOAD_BASE_URL:http://localhost:8000/academic-service}
+  base-url: ${APP_BASE_URL:http://localhost:8000/ui}

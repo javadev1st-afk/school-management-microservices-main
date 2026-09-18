@@ -18,3 +18,4 @@ generated-test-sources/
 # Local runtime logs
 .run-logs/
 .sh
+deployment/

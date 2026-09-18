@@ -37,8 +37,8 @@ public class HomeworkService {
     @Value("${app.homework.storage.path:./deployment/homework}")
     private String storageBasePath;
 
-    @Value("${app.base-url:http://localhost:8000}")
-    private String appBaseUrl;
+    @Value("${app.homework.download.base-url:http://localhost:8000/academic-service}")
+    private String downloadBaseUrl;
 
     public HomeworkDTO createHomework(HomeworkDTO homeworkDTO) {
         log.info("Creating homework: {} for class: {} section: {}", homeworkDTO.getTitle(), homeworkDTO.getClassId(), homeworkDTO.getSectionName());
@@ -172,9 +172,17 @@ public class HomeworkService {
         }
         for (HomeworkFile file : homework.getFiles()) {
             if (file.getId() != null) {
-                file.setDownloadUrl(appBaseUrl + "/api/v1/homework/files/" + file.getId() + "/download");
+                file.setDownloadUrl(buildDownloadUrl(file.getId()));
             }
         }
+    }
+
+    private String buildDownloadUrl(Long fileId) {
+        String base = Optional.ofNullable(downloadBaseUrl)
+                .filter(value -> !value.isBlank())
+                .orElse("http://localhost:8000/academic-service");
+        String normalizedBase = base.replaceAll("/+$", "");
+        return normalizedBase + "/api/v1/homework/files/" + fileId + "/download";
     }
 
     private String sanitizeSchoolCode(String schoolCode) {

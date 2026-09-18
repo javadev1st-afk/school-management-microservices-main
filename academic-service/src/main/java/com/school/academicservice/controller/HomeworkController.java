@@ -10,7 +10,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDate;
@@ -130,14 +129,12 @@ public class HomeworkController {
                 ? MediaType.APPLICATION_OCTET_STREAM
                 : MediaType.parseMediaType(file.getContentType());
 
-        try (InputStream inputStream = Files.newInputStream(filePath)) {
-            InputStreamResource resource = new InputStreamResource(inputStream);
-            return ResponseEntity.ok()
-                    .contentType(contentType)
-                    .contentLength(Files.size(filePath))
-                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + safeFileName(file.getFileName()) + "\"")
-                    .body(resource);
-        }
+        Resource resource = new FileSystemResource(filePath);
+        return ResponseEntity.ok()
+                .contentType(contentType)
+                .contentLength(Files.size(filePath))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + safeFileName(file.getFileName()) + "\"")
+                .body(resource);
     }
 
     private String safeFileName(String fileName) {
