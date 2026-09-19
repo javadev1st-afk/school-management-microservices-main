@@ -31,7 +31,7 @@ public class Announcement {
 	@Column(name = "class_id")
 	private Long classId;
 	@Column(name = "section_name")
-	private Long sectionName;
+	private String sectionName;
 	@Column(name = "posted_date")
 	private LocalDateTime postedDate;
 	@Column(name = "expires_date")

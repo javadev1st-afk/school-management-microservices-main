@@ -35,4 +35,6 @@ public class AttendanceDTO {
     private AttendanceStatus status;
 
     private String remarks;
+    
+    private boolean onLeave;
 }

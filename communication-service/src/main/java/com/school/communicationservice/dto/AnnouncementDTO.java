@@ -19,7 +19,7 @@ public class AnnouncementDTO {
 	private String content;
 	private String fileUrl;
 	private Long classId;
-	private Long sectionName;
+	private String sectionName;
 	private LocalDateTime postedDate;
 	private LocalDateTime expiresDate;
 	private Boolean active;

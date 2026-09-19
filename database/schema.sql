@@ -161,6 +161,7 @@ CREATE TABLE IF NOT EXISTS attendance (
     remarks VARCHAR(255),
     created_at DATETIME NOT NULL,
     updated_at DATETIME,
+    on_leave boolean,
     PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -300,7 +301,7 @@ CREATE TABLE IF NOT EXISTS announcements (
     content TEXT NOT NULL,
     file_url VARCHAR(500),
     class_id BIGINT,
-    section_name BIGINT,
+    section_name VARCHAR(2),
     posted_date DATETIME,
     expires_date DATETIME,
     is_active BOOLEAN,

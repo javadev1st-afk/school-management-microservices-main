@@ -20,6 +20,7 @@ public class AttendanceConverter {
                 .attendanceDate(attendance.getAttendanceDate())
                 .status(attendance.getStatus())
                 .remarks(attendance.getRemarks())
+                .onLeave(attendance.isOnLeave())
                 .build();
     }
 
@@ -36,6 +37,7 @@ public class AttendanceConverter {
                 .attendanceDate(attendanceDTO.getAttendanceDate())
                 .status(attendanceDTO.getStatus())
                 .remarks(attendanceDTO.getRemarks())
+                .onLeave(attendanceDTO.isOnLeave())
                 .build();
     }
 }

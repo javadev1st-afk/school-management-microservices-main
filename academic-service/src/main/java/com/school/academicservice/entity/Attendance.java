@@ -55,4 +55,7 @@ public class Attendance {
     @Column(name = "updated_at")
     @LastModifiedDate
     private LocalDateTime updatedAt;
+    
+    @Column(name = "on_leave")
+    private boolean onLeave;
 }

@@ -48,6 +48,12 @@ public class LeaveApplicationController {
 	public ApiResponse<List<LeaveApplicationDTO>> allCurrentYear() {
 		return ApiResponse.success(service.getCurrentYearLeave());
 	}
+
+	@GetMapping("/date/{date}")
+	@PreAuthorize("hasAnyRole('ADMIN', 'TEACHER')")
+	public ApiResponse<List<LeaveApplicationDTO>> byDate(@PathVariable LocalDate date) {
+		return ApiResponse.success(service.byDate(date));
+	}
 	
 	
 	@GetMapping

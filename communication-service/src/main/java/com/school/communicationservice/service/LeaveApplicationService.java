@@ -45,8 +45,14 @@ public class LeaveApplicationService {
 
 	@Transactional(readOnly = true)
 	public List<LeaveApplicationDTO> byAdmissionNumberAndDate(Long admissionNumber, LocalDate date) {
-		return repository.findByFromDateLessThanEqualAndToDateGreaterThanEqual(admissionNumber, date, date).stream()
+		return repository.findByAdmissionNumberAndFromDateLessThanEqualAndToDateGreaterThanEqual(admissionNumber, date, date).stream()
 				.filter(x -> x.getToDate().isAfter(LocalDate.now().withDayOfYear(1)))
+				.map(converter::toDto).toList();
+	}
+	
+	@Transactional(readOnly = true)
+	public List<LeaveApplicationDTO> byDate(LocalDate date) {
+		return repository.findByFromDateLessThanEqualAndToDateGreaterThanEqual(date, date).stream()
 				.map(converter::toDto).toList();
 	}
 

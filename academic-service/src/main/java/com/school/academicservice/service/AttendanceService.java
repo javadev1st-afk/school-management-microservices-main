@@ -13,7 +13,6 @@ import com.school.academicservice.converter.AttendanceConverter;
 import com.school.academicservice.dto.AttendanceDTO;
 import com.school.academicservice.entity.Attendance;
 import com.school.academicservice.repository.AttendanceRepository;
-import com.school.common.exception.DuplicateResourceException;
 import com.school.common.exception.ResourceNotFoundException;
 
 import lombok.RequiredArgsConstructor;
@@ -38,10 +37,11 @@ public class AttendanceService {
 		for (AttendanceDTO attendanceDTO : attendanceDTOs) {
 			Attendance existingAtt = attendanceRepository.findByAdmissionNumberAndAttendanceDate(
 					attendanceDTO.getAdmissionNumber(), attendanceDTO.getAttendanceDate()).orElse(null);
-			if (existingAtt != null
-					&& !Objects.equals(existingAtt.getStatus(), attendanceDTO.getStatus())) {
-				existingAtt.setStatus(attendanceDTO.getStatus());
-				attList.add(existingAtt);
+			if (existingAtt != null) {
+				if(!Objects.equals(existingAtt.getStatus(), attendanceDTO.getStatus())) {
+					existingAtt.setStatus(attendanceDTO.getStatus());
+					attList.add(existingAtt);
+				}
 			} else {
 				attList.add(attendanceConverter.dtoToEntity(attendanceDTO));
 			}
@@ -67,6 +67,26 @@ public class AttendanceService {
 		log.info("Fetching attendance for student: {} between {} and {}", admissionNumber, fromDate, toDate);
 		List<Attendance> attendances = attendanceRepository
 				.findByAdmissionNumberAndAttendanceDateBetween(admissionNumber, fromDate, toDate);
+		return attendances.stream().map(attendanceConverter::entityToDTO).collect(Collectors.toList());
+	}
+
+	public List<AttendanceDTO> getStudentAttendanceBetweenDates(Long classId, String sectionName, Long admissionNumber, LocalDate fromDate,
+			LocalDate toDate) {
+		log.info("Fetching attendance for class: {} section: {} between {} and {}", classId, sectionName, fromDate, toDate);
+		List<Attendance> attendances = new ArrayList<>();
+		if(admissionNumber != null) {
+			attendances = attendanceRepository
+					.findByAdmissionNumberAndAttendanceDateBetween(admissionNumber, fromDate, toDate);
+		} else {
+			if(fromDate != null && toDate != null) {
+				attendances = attendanceRepository
+						.findByClassIdAndSectionNameAndAttendanceDateBetween(classId, sectionName, fromDate, toDate);
+			}else {
+			attendances = attendanceRepository
+					.findByClassIdAndSectionNameAndAttendanceDate(classId, sectionName, fromDate);
+			}
+		}
+		
 		return attendances.stream().map(attendanceConverter::entityToDTO).collect(Collectors.toList());
 	}
 

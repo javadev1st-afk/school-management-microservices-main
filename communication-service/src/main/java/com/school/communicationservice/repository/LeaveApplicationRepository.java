@@ -16,5 +16,7 @@ public interface LeaveApplicationRepository extends JpaRepository<LeaveApplicati
 	
 	List<LeaveApplication> findByFromDateGreaterThanEqual(LocalDate date);
 	
-	List<LeaveApplication> findByFromDateLessThanEqualAndToDateGreaterThanEqual(Long admissionNumber, LocalDate fromDate, LocalDate toDate);
+	List<LeaveApplication> findByAdmissionNumberAndFromDateLessThanEqualAndToDateGreaterThanEqual(Long admissionNumber, LocalDate fromDate, LocalDate toDate);
+
+	List<LeaveApplication> findByFromDateLessThanEqualAndToDateGreaterThanEqual(LocalDate fromDate, LocalDate toDate);
 }

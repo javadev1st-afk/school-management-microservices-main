@@ -54,12 +54,17 @@ public class AttendanceController {
         return ResponseEntity.ok(ApiResponse.success(response));
     }
 
-    @GetMapping("/student/{admissionNumber}/class/{classId}")
+    @GetMapping("/history/params")
     @PreAuthorize("hasAnyRole('ADMIN', 'TEACHER', 'STUDENT')")
-    @Operation(summary = "Get all attendance for a student")
-    public ResponseEntity<ApiResponse<List<AttendanceDTO>>> getStudentAttendance(@PathVariable Long admissionNumber, @PathVariable Long classId) {
-        log.info("Get student attendance request received for student: {}", admissionNumber);
-        List<AttendanceDTO> response = attendanceService.getStudentAttendance(admissionNumber, classId);
+    @Operation(summary = "Get attendance between dates")
+    public ResponseEntity<ApiResponse<List<AttendanceDTO>>> getStudentAttendanceDateRange1(
+            @RequestParam Long classId,
+            @RequestParam String sectionName,
+            @RequestParam(required = false) Long admissionNumber,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate) {
+        log.info("Get student attendance request between {} and {}", fromDate, toDate);
+        List<AttendanceDTO> response = attendanceService.getStudentAttendanceBetweenDates(classId, sectionName, admissionNumber, fromDate, toDate);
         return ResponseEntity.ok(ApiResponse.success(response));
     }
 
